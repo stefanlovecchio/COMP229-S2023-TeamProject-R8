@@ -1,7 +1,7 @@
 
 module.exports = 
 {
-    "URI": "ongodb+srv://stefanlovecchio:BAFNZ6z4&?aK%rJ@cluster0.t8qyfgu.mongodb.net/test"
+    "URI": "mongodb+srv://stefan:FeQ7SZAM80S3rkO4@mongodbserver.nwznzzn.mongodb.net/expressPortfolio?retryWrites=true&w=majority"
 }
 
-//mongodb+srv://stefanlovecchio:BAFNZ6z4&?aK%rJ@cluster0.t8qyfgu.mongodb.net/test
+//mongodb+srv://stefan:FeQ7SZAM80S3rkO4@mongodbserver.nwznzzn.mongodb.net/expressPortfolio?retryWrites=true&w=majority
