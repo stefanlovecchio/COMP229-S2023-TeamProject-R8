@@ -11,5 +11,13 @@ module.exports.displayHomePage = (req, res, next) => {
 }
 
 
+module.exports.displaySurveysPage = (req, res, next) => {
+    res.render('surveys/index', { title: 'Survey List' });
+}
+
+//this is routing to the home page as well?
+module.exports.displaySurveysdetailsPage = (req, res, next) => {
+    res.render('surveys/details', { title: '' });
+}
 
 
