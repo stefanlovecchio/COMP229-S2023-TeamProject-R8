@@ -18,6 +18,7 @@ let mongoose = require('mongoose');
 let DB = require('./db');
 
 let indexRouter = require('../routes/index');
+//let surveysRouter = require('../routes/surveys')
 
 
 // point mongoose to the DB URI
@@ -57,6 +58,7 @@ app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
 app.use('/', indexRouter);
+//app.use('/surveys', surveysRouter);
 
 
 

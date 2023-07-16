@@ -13,6 +13,6 @@ router.get('/home', indexController.displayHomePage);
 router.get('/surveys', indexController.displaySurveysPage);
 
 /* GET serveys detail page. */
-router.get('/add', indexController.displaySurveysdetailsPage);
+router.get('/details', indexController.displaySurveysdetailsPage);
 
 module.exports = router;
