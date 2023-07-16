@@ -51,8 +51,9 @@ module.exports.displayDetailsPage = (req, res, next) => {
     
         try {
             let surveyToEdit = await Survey.findById(id);
+                    console.log(req.body);
             res.render('surveys/edit', 
-            {title: 'Edit Survey', 
+            {title: surveyToEdit.Title,  
             survey: surveyToEdit});
         } catch(err) {
             console.log(err);
@@ -61,28 +62,42 @@ module.exports.displayDetailsPage = (req, res, next) => {
     };
     
     module.exports.processEditPage = async (req, res, next) => {
-        let id = req.params.id
-    
-        let updatedSurvey = {
-            "_id": id,
-            "Title": req.body.Title,
-            "Description": req.body.Description,
-            //"NumberMCQuestions": req.body.NumberMCQuestions,
-            //"NumberSCQuestions": req.body.NumberSCQuestions,
-            "NumberAnswers": req.body.NumberAnswers,
-            "questions.length": req.body.numQuestions,
-            "answers": req.body.answers
-        };
-    
-        try {
-            await Survey.updateOne({_id: id}, updatedSurvey);
-            res.redirect('/surveys');
-    
-        } catch(err) {
-            console.log(err);
-            res.status(500).send(err);
-        }
+  let id = req.params.id;
+
+  let updatedSurvey = {
+    Title: req.body.Title,
+    Description: req.body.Description,
+    Questions: []
+  };
+
+  for (let count = 0; count < req.body.numQuestions; count++) {
+    let question = {
+      question: req.body[`question${count}`],
+      answers: []
     };
+
+    for (let i = 0; i < req.body[`numAnswers${count}`]; i++) {
+      let answer = req.body[`answer${count}_${i}`];
+      question.answers.push(answer);
+    }
+
+    updatedSurvey.Questions.push(question);
+  }
+
+  try {
+    await Survey.updateOne({ _id: id }, updatedSurvey);
+    res.redirect('/surveys');
+  } catch (err) {
+    console.log(err);
+    res.status(500).send(err);
+  }
+};
+
+      
+      
+      
+      
+      
     
     module.exports.performDelete = async (req, res, next) => {
         let id = req.params.id;

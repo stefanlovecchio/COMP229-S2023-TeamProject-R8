@@ -18,7 +18,17 @@
           <!-- Add a hidden input element for QuestionType -->
           <input type="hidden" id="QuestionType" name="QuestionType" />
           <!-- Add a hidden input element for NumberOfQuestions -->
-          <input type="hidden" name="NumberOfQuestions" value="1" />
+          <input type="hidden" name="NumberOfQuestions" value="<%= survey.numQuestions %>" />
+            <script>
+  const answerTypeRadioButtons = document.querySelectorAll('input[name="answerType"]');
+  const questionTypeInput = document.getElementById('QuestionType');
+
+  answerTypeRadioButtons.forEach((radioButton) => {
+    radioButton.addEventListener('change', () => {
+      questionTypeInput.value = radioButton.value;
+    });
+  });
+</script>
 
           <% var colors = ["#ff00bc73", "#9100ff73", "#03a9f475",
           "#004eff59","#00ffe773", "#00ff4e73"]; %> 
@@ -28,8 +38,6 @@
                 <!-- Changed input to textarea and added name attribute -->
                 <label for="question<%= count %>">Question: <%= count + 1 %></label><br />
                 <textarea id="question<%= count %>" name="Questions[<%= count %>][Question]"></textarea><br />
-                <button class="edit">Edit</button>
-                <button class="delete">Delete</button>
 
                 <div id="answers">
                   <% for(let i = 0; i < survey.NumberAnswers; i++) { %>
@@ -37,7 +45,6 @@
                       <!-- Changed name attribute -->
                       <label for="answer<%= count %>_<%= i %>"> Answer <%= i + 1 %>:</label><br />
                       <input type="text" id="answer<%= count %>_<%= i %>" name="Questions[<%= count %>][Answer][<%= i %>]"/><br />
-                      <button class="edit">Edit</button>
                       <button class="delete">Delete</button>
                     </div>
                   <% } %>
