@@ -9,21 +9,32 @@
         <div class="col-md-offset-1 col-md-10">
           <h3>Surveys</h3>
          
-          <a href="/details" class="btn btn-primary"><i class="fa fa-plus"></i> Add a Survey</a>
+          <a href="/survey-list/details" class="btn btn-primary"><i class="fa fa-plus"></i> Add a Survey</a>
           <br>
           <div class="table-responsive">
             <table class="table table-bordered table-striped table-hover">
-              <thead>
-                <tr>
-                  <th>Title</th>
-                  <th class="text-center"></th>
-                  <th class="text-center"></th>
-                  <th class="text-center"></th>
-                  <th class="text-center"></th>
-                  <th class="text-center"></th>
+          
+                <tr class="d-flex">
+                  <th class="text-center col-2">Title</th>
+                  <th class="text-center col-4">Description</th>
+                  <th class="text-center col-1">MCQuestions</th>
+                  <th class="text-center col-1">SCQuestions</th>
+                  <th class="text-center col-2">Answers</th>
                 </tr>
-                </thead>
-                <tbody>
+            
+            <% for(let count=0; count < SurveyList.length; count++) { %>
+              <tr class="d-flex">
+                <td class="text-center col-2"><%=SurveyList[count].Title %></td>
+                <td class="text-center col-4"><%=SurveyList[count].Description %></td>
+                <td class="text-center col-1"><%=SurveyList[count].NumberMCQuestions %></td>
+                <td class="text-center col-1"><%=SurveyList[count].NumberSCQuestions %></td>
+                <td class="text-center col-1"><%=SurveyList[count].NumberAnswers %></td>
+             
+              </tr>
+
+
+            <%}%>
+                
               
           </div>
            <div class="col-md-offset-1 col-md-10 text-center">

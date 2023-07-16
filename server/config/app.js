@@ -13,12 +13,12 @@ let passportLocal = require('passport-local');
 let localStrategy = passportLocal.Strategy;
 let flash = require('connect-flash');
 
-// database setup
+// database setups
 let mongoose = require('mongoose');
 let DB = require('./db');
 
 let indexRouter = require('../routes/index');
-//let surveysRouter = require('../routes/surveys')
+let surveyRouter = require('../routes/survey');
 
 
 // point mongoose to the DB URI
@@ -44,6 +44,8 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, '../../public')));
 app.use(express.static(path.join(__dirname, '../../node_modules')));
 
+
+
 // setup express session
 app.use(session({
   secret: "SomeSecret",
@@ -58,7 +60,7 @@ app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
 app.use('/', indexRouter);
-//app.use('/surveys', surveysRouter);
+app.use('/survey-list', surveyRouter);
 
 
 

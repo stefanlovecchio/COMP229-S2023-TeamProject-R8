@@ -10,9 +10,9 @@ router.get('/', indexController.displayHomePage);
 router.get('/home', indexController.displayHomePage);
 
 /* GET serveys page. */
-router.get('/surveys', indexController.displaySurveysPage);
+//router.get('/surveys', indexController.displaySurveysPage);
 
 /* GET serveys detail page. */
-router.get('/details', indexController.displaySurveysdetailsPage);
+//router.get('/details', indexController.displaySurveysdetailsPage);
 
 module.exports = router;

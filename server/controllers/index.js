@@ -10,7 +10,6 @@ module.exports.displayHomePage = (req, res, next) => {
     res.render('index', { title: 'Home' });
 }
 
-
 module.exports.displaySurveysPage = (req, res, next) => {
     res.render('surveys/index', { title: 'Survey List' });
 }
@@ -19,5 +18,4 @@ module.exports.displaySurveysPage = (req, res, next) => {
 module.exports.displaySurveysdetailsPage = (req, res, next) => {
     res.render('surveys/details', { title: '' });
 }
-
 
