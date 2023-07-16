@@ -5,12 +5,16 @@ let passport = require('passport');
 
 // create a reference to the model
 let Survey = require('../models/survey');
+const survey = require('../models/survey');
 
-//create logic to display the main list of sureveys
+//create logic to display the main list of surveys
 module.exports.displaySurveyPage = async (req, res, next) => {
     try {
         let surveyList = await Survey.find();
-        res.render('surveys/index', { title: 'Survey List', SurveyList: surveyList });
+        res.render('surveys/index', 
+        { title: 'Survey List', 
+        SurveyList: surveyList });
+        res.json(bookList);
     } catch (err) {
         console.error(err);
     }
@@ -21,27 +25,73 @@ module.exports.displayDetailsPage = (req, res, next) => {
     res.render('surveys/details', { title: 'Survey Details' });
 }
 
-module.exports.processDetailsPage = (req, res, next) => {
-    let newSurvey = Survey({
-        "Title": req.body.Title,
-        "Description": req.body.Description,
-        "NumberMCQuestions": req.body.NumberMCQuestions,
-        "NumberSCQuestions": req.body.NumberSCQuestions,
-        "NumberAnswers": req.body.NumberAnswers
-    });
 
-    Survey.create(newSurvey, (err, Survey) =>{
-        if(err)
-        {
+    module.exports.processDetailsPage = (req, res, next) => {
+        let newSurvey = Survey({
+            "Title": req.body.Title,
+            "Description": req.body.Description,
+            "NumberMCQuestions": req.body.NumberMCQuestions,
+            "NumberSCQuestions": req.body.NumberSCQuestions,
+            "NumberAnswers": req.body.NumberAnswers
+        });
+    
+        Survey.create(newSurvey).then((survey) => {
+            console.log(survey);
+            res.redirect('surveys');
+        }).catch((err) => {
             console.log(err);
-            res.end(err);
+        });
+        
+    
+    }
+    
+    module.exports.displayEditPage = async (req, res, next) => {
+        let id = req.params.id;
+    
+        try {
+            let surveyToEdit = await survey.findById(id);
+            res.render('surveys/edit', 
+        {title: 'Edit Survey', 
+        survey: surveyToEdit
+        });
+    
+        } catch(err) {
+            console.log(err);
+            res.status(500).send(err);
         }
-        else
-        {
-            // refresh the book list
-            res.redirect('/survey-list');
+    }
+    
+    module.exports.processEditPage = async (req, res, next) => {
+        let id = req.params.id
+    
+        let updatedSurvey = {
+            "_id": id,
+            "Title": req.body.Title,
+            "Description": req.body.Description,
+            "NumberMCQuestions": req.body.NumberMCQuestions,
+            "NumberSCQuestions": req.body.NumberSCQuestions,
+            "NumberAnswers": req.body.NumberAnswers
+        };
+    
+        try {
+            await Survey.updateOne({_id: id}, updatedSurvey);
+            res.redirect('/surveys');
+    
+        } catch(err) {
+            console.log(err);
+            res.status(500).send(err);
         }
-    });
-
-}
+    }
+    
+    module.exports.performDelete = async (req, res, next) => {
+        let id = req.params.id;
+    
+        try {
+            await Survey.findByIdAndRemove(id);
+            res.redirect('/surveys');
+        } catch(err) {
+            console.log(err);
+            res.status(500).send(err);
+        }
+    }
 
