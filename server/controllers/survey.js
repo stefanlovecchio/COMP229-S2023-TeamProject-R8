@@ -5,7 +5,7 @@ let passport = require('passport');
 
 // create a reference to the model
 let Survey = require('../models/survey');
-const survey = require('../models/survey');
+
 
 //create logic to display the main list of surveys
 module.exports.displaySurveyPage = async (req, res, next) => {
@@ -18,7 +18,7 @@ module.exports.displaySurveyPage = async (req, res, next) => {
     } catch (err) {
         console.error(err);
     }
-}
+};
     
 //create logic to create a new survey and details
 module.exports.displayDetailsPage = (req, res, next) => {
@@ -26,13 +26,14 @@ module.exports.displayDetailsPage = (req, res, next) => {
 }
 
 
-    module.exports.processDetailsPage = (req, res, next) => {
-        let newSurvey = Survey({
+    module.exports.processAddPage = (req, res, next) => {
+        let newSurvey = new Survey({
             "Title": req.body.Title,
             "Description": req.body.Description,
             "NumberMCQuestions": req.body.NumberMCQuestions,
             "NumberSCQuestions": req.body.NumberSCQuestions,
-            "NumberAnswers": req.body.NumberAnswers
+            "NumberAnswers": req.body.NumberAnswers,
+            "numQuestions": req.body.numQuestions,
         });
     
         Survey.create(newSurvey).then((survey) => {
@@ -43,23 +44,21 @@ module.exports.displayDetailsPage = (req, res, next) => {
         });
         
     
-    }
+    };
     
     module.exports.displayEditPage = async (req, res, next) => {
         let id = req.params.id;
     
         try {
-            let surveyToEdit = await survey.findById(id);
+            let surveyToEdit = await Survey.findById(id);
             res.render('surveys/edit', 
-        {title: 'Edit Survey', 
-        survey: surveyToEdit
-        });
-    
+            {title: 'Edit Survey', 
+            survey: surveyToEdit});
         } catch(err) {
             console.log(err);
             res.status(500).send(err);
         }
-    }
+    };
     
     module.exports.processEditPage = async (req, res, next) => {
         let id = req.params.id
@@ -68,9 +67,11 @@ module.exports.displayDetailsPage = (req, res, next) => {
             "_id": id,
             "Title": req.body.Title,
             "Description": req.body.Description,
-            "NumberMCQuestions": req.body.NumberMCQuestions,
-            "NumberSCQuestions": req.body.NumberSCQuestions,
-            "NumberAnswers": req.body.NumberAnswers
+            //"NumberMCQuestions": req.body.NumberMCQuestions,
+            //"NumberSCQuestions": req.body.NumberSCQuestions,
+            "NumberAnswers": req.body.NumberAnswers,
+            "questions.length": req.body.numQuestions,
+            "answers": req.body.answers
         };
     
         try {
@@ -81,7 +82,7 @@ module.exports.displayDetailsPage = (req, res, next) => {
             console.log(err);
             res.status(500).send(err);
         }
-    }
+    };
     
     module.exports.performDelete = async (req, res, next) => {
         let id = req.params.id;
@@ -93,5 +94,5 @@ module.exports.displayDetailsPage = (req, res, next) => {
             console.log(err);
             res.status(500).send(err);
         }
-    }
+    };
 

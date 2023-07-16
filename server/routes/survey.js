@@ -14,7 +14,7 @@ router.get('/surveys', surveyController.displaySurveyPage);
 router.get('/details', surveyController.displayDetailsPage);
 
 /* POST Route for processing the Add page - CREATE Operation */
-router.post('/details', surveyController.processDetailsPage);
+router.post('/details', surveyController.processAddPage);
 
 // Get Route for displaying the Edit page - UPDATE Operation
 router.get('/edit/:id',  surveyController.displayEditPage);
