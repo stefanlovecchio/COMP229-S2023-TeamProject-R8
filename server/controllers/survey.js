@@ -13,8 +13,8 @@ module.exports.displaySurveyPage = async (req, res, next) => {
         let surveyList = await Survey.find();
         res.render('surveys/index', 
         { title: 'Survey List', 
-        SurveyList: surveyList });
-        res.json(bookList);
+        surveys: surveyList });
+        
     } catch (err) {
         console.error(err);
     }
@@ -28,12 +28,9 @@ module.exports.displayDetailsPage = (req, res, next) => {
 
     module.exports.processAddPage = (req, res, next) => {
         let newSurvey = new Survey({
-            "Title": req.body.Title,
-            "Description": req.body.Description,
-            "NumberMCQuestions": req.body.NumberMCQuestions,
-            "NumberSCQuestions": req.body.NumberSCQuestions,
-            "NumberAnswers": req.body.NumberAnswers,
-            "numQuestions": req.body.numQuestions,
+            "title": req.body.title,
+            "description": req.body.description,
+            questions: req.body.questions,
         });
     
         Survey.create(newSurvey).then((survey) => {
@@ -42,19 +39,19 @@ module.exports.displayDetailsPage = (req, res, next) => {
         }).catch((err) => {
             console.log(err);
         });
-        
-    
+
     };
+
     
     module.exports.displayEditPage = async (req, res, next) => {
         let id = req.params.id;
-    
+        
         try {
             let surveyToEdit = await Survey.findById(id);
-                    console.log(req.body);
             res.render('surveys/edit', 
-            {title: surveyToEdit.Title,  
-            survey: surveyToEdit});
+            {title: surveyToEdit.title,  
+                survey: surveyToEdit});
+                //console.log(surveyToEdit);
         } catch(err) {
             console.log(err);
             res.status(500).send(err);
@@ -62,36 +59,33 @@ module.exports.displayDetailsPage = (req, res, next) => {
     };
     
     module.exports.processEditPage = async (req, res, next) => {
-  let id = req.params.id;
-
-  let updatedSurvey = {
-    Title: req.body.Title,
-    Description: req.body.Description,
-    Questions: []
-  };
-
-  for (let count = 0; count < req.body.numQuestions; count++) {
-    let question = {
-      question: req.body[`question${count}`],
-      answers: []
-    };
-
-    for (let i = 0; i < req.body[`numAnswers${count}`]; i++) {
-      let answer = req.body[`answer${count}_${i}`];
-      question.answers.push(answer);
-    }
-
-    updatedSurvey.Questions.push(question);
-  }
-
-  try {
-    await Survey.updateOne({ _id: id }, updatedSurvey);
-    res.redirect('/surveys');
-  } catch (err) {
-    console.log(err);
-    res.status(500).send(err);
-  }
-};
+        let id = req.params.id;
+        
+        try {
+            console.log(JSON.stringify(req.body));
+            // Use the ID in the body of the request to find the survey
+            const survey = await Survey.findById(id);
+            
+            if (!survey) {
+              return res.status(404).json({ message: 'Survey not found' });
+            }
+        
+            // Update the survey
+            survey.title = req.body.title;
+            survey.description = req.body.description;
+            survey.questions = req.body.questions;
+        
+            // Save the survey
+            const updatedSurvey = await survey.save();
+            
+            //return res.status(200).json(updatedSurvey);
+            res.redirect('surveys');
+          } catch (err) {
+            console.log(err);  // debug line
+            return res.status(500).json({ error: err.message });
+          }
+        };
+        
 
       
       
@@ -111,3 +105,38 @@ module.exports.displayDetailsPage = (req, res, next) => {
         }
     };
 
+    function isRequestBodyValid(body) {
+        // Check that body contains a 'questions' property
+        if (!body.questions) {
+          return false;
+        }
+      
+        // Check that 'questions' is an array
+        if (!Array.isArray(body.questions)) {
+          return false;
+        }
+      
+        // Check each question in the array
+        for (let question of body.questions) {
+          // Check that 'questionText' property exists and is a string
+          if (!question.questionText || typeof question.questionText !== 'string') {
+            return false;
+          }
+      
+          // Check that 'answers' property exists and is an array
+          if (!question.answers || !Array.isArray(question.answers)) {
+            return false;
+          }
+      
+          // Check each answer in the array
+          for (let answer of question.answers) {
+            // Check that 'answerText' property exists and is a string
+            if (!answer.answerText || typeof answer.answerText !== 'string') {
+              return false;
+            }
+          }
+        }
+      
+        // If all checks pass, return true
+        return true;
+      }

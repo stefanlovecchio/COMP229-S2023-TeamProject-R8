@@ -1,70 +1,148 @@
 <%- include('../partials/header.ejs') %> 
-<%- include('../partials/main_nav.ejs') %>
+<%- include('../partials/main_nav.ejs')%>
 
-<div class="container">
-  <div class="row">
+<head>
+  <div class="container">
     <div class="col-md-offset-3 col-md-6">
-      <h1><%= title %></h1>
+      <h1><%= survey.title %></h1>
+      <label for="title">Title: </label>
+      <form method="POST" action="/edit/<%= survey._id %>">
+      <input type="text" name="title" value="<%= survey.title %>"><br /><br />
+    </head>
+    <body>
       <!--Edit Survey-->
-      <form class="form" method="POST" id="editedSurvey">
-        <div class="form-group">
-          <label for="NameTextField">Add Question</label>
-          <label for="answerType">Answer Type:</label><br />
-          <!-- Add an id to each radio button -->
-          <input type="radio" id="single" name="answerType" value="single" />
-          <label for="single">Single Correct Answer (Radio Buttons)</label><br />
-          <input type="radio" id="multiple" name="answerType" value="multiple" />
-          <label for="multiple">Multiple Correct Answers (Checkboxes)</label><br /><br />
-          <!-- Add a hidden input element for QuestionType -->
-          <input type="hidden" id="QuestionType" name="QuestionType" />
-          <!-- Add a hidden input element for NumberOfQuestions -->
-          <input type="hidden" name="NumberOfQuestions" value="<%= survey.numQuestions %>" />
-            <script>
-  const answerTypeRadioButtons = document.querySelectorAll('input[name="answerType"]');
-  const questionTypeInput = document.getElementById('QuestionType');
-
-  answerTypeRadioButtons.forEach((radioButton) => {
-    radioButton.addEventListener('change', () => {
-      questionTypeInput.value = radioButton.value;
-    });
-  });
-</script>
-
-          <% var colors = ["#ff00bc73", "#9100ff73", "#03a9f475",
-          "#004eff59","#00ffe773", "#00ff4e73"]; %> 
-          <% for(let count = 0; count < survey.numQuestions; count++) { %>
-            <div id="questions" style="background-color: <%= colors[Math.floor(Math.random() * colors.length)] %>;">
-              <div class="question">
-                <!-- Changed input to textarea and added name attribute -->
-                <label for="question<%= count %>">Question: <%= count + 1 %></label><br />
-                <textarea id="question<%= count %>" name="Questions[<%= count %>][Question]"></textarea><br />
-
-                <div id="answers">
-                  <% for(let i = 0; i < survey.NumberAnswers; i++) { %>
-                    <div class="answer">
-                      <!-- Changed name attribute -->
-                      <label for="answer<%= count %>_<%= i %>"> Answer <%= i + 1 %>:</label><br />
-                      <input type="text" id="answer<%= count %>_<%= i %>" name="Questions[<%= count %>][Answer][<%= i %>]"/><br />
-                      <button class="delete">Delete</button>
-                    </div>
-                  <% } %>
-                </div><br/>
-                <button id="addAnswer">Add Answer</button><br /><br />
-              </div>
-            </div>
-          <% } %>
-        </div>
-        <button id="addQuestion">Add a Question</button><br /><br />
-        <div style="margin-bottom: 3rem; display: grid; justify-content: space-around;">
-          <button class="btn btn-primary" type="submit">
-            <i class="fa fa-check-square-o"></i> Submit</button>
-          <a href="/surveys" class="btn btn-warning">
-            <i class="fa fa-undo"></i> Cancel</a>
-        </div>
-      </form>
+    <div id="row">
+    <% for(let i = 0; i < survey.questions.length; i++) { %>
+      <div id="questions-container">
+        <input type="text" name="questions[<%= i %>][question]" value="<%= survey.questions[i].question %>">
+        <button type="button" id="remove-question-btn">Remove Question</button>
+        <% for(let j = 0; j < survey.questions[i].answers.length; j++) { %>
+          <div id="answers-container">
+            <input type="text" name="answers[<%= i %>][answers][<%= j %>]" value="<%= survey.questions[i].answers[j] %>">
+            <button type="button" class="remove-answer-btn">Remove Answer</button>
+          </div>
+        <% } %>
+        <button type="button" class="add-answer-btn" id="add-answer-btn">Add Answer</button><br /><br />
+      </div><br />
+    <% } %>
+  </div>
+    <button class="add-question-btn"id="add-question-btn">Add Question</button><br /><br />
+          <div style="margin-bottom: 3rem; display: grid; justify-content: space-around;">
+            <button class="btn btn-primary" type="submit">
+              <i class="fa fa-check-square-o"></i> Submit</button>
+            <a href="/surveys" class="btn btn-warning">
+              <i class="fa fa-undo"></i> Cancel</a>
+        </form>
     </div>
   </div>
-</div>
+
+  <script>
+  // Add question functionality
+const addQuestionBtn = document.getElementById('add-question-btn');
+const questionsContainer = document.getElementById('questions-container');
+const row = document.getElementById('row');
+
+addQuestionBtn.addEventListener('click', () => {
+  const questionDiv = document.createElement('div');
+  questionDiv.classList.add('question');
+
+  const questionText = document.createElement('input');
+  questionText.type = 'text';
+  questionText.classList.add('question-text');
+  questionText.name = 'questions[]';
+  questionText.placeholder = 'Question Text';
+  questionText.required = true;
+
+  const answersContainer = document.createElement('div');
+  answersContainer.classList.add('answers-container');
+
+  const addAnswerBtn = document.createElement('button');
+  addAnswerBtn.type = 'button';
+  addAnswerBtn.classList.add('add-answer-btn');
+  addAnswerBtn.textContent = 'Add Answer';
+
+  addAnswerBtn.addEventListener('click', () => {
+    const answerText = document.createElement('input');
+    answerText.type = 'text';
+    answerText.classList.add('answer-text');
+    answerText.name = 'answers[]';
+    answerText.placeholder = 'Answer Text';
+    answerText.required = true;
+    const removeAnswerBtn = document.createElement('button');
+    removeAnswerBtn.type = 'button';
+    removeAnswerBtn.classList.add('remove-answer-btn');
+    removeAnswerBtn.textContent = 'Remove Answer';
+
+    removeAnswerBtn.addEventListener('click', () => {
+      answerDiv.remove();
+    });
+    const answerDiv = document.createElement('div');
+    answerDiv.classList.add('answer');
+    answerDiv.appendChild(answerText);
+    answerDiv.appendChild(removeAnswerBtn);
+    answersContainer.appendChild(answerDiv);
+  });
+
+  const removeQuestionBtn = document.createElement('button');
+  removeQuestionBtn.type = 'button';
+  removeQuestionBtn.classList.add('remove-question-btn');
+  removeQuestionBtn.textContent = 'Remove Question';
+  removeQuestionBtn.addEventListener('click', () => {
+    questionDiv.remove();
+  });
+
+  questionDiv.appendChild(questionText);
+  questionDiv.appendChild(answersContainer);
+  questionDiv.appendChild(addAnswerBtn);
+  questionDiv.appendChild(removeQuestionBtn);
+
+  row.appendChild(questionDiv);
+});
+
+const existingAnsBtn = document.querySelectorAll('#add-answer-btn');
+//add click event listener to each existing add-answer-buttons
+
+for (let i = 0; i < existingAnsBtn.length; i++) {
+  
+  existingAnsBtn[i].addEventListener('click', () => {
+    const answerDiv = document.createElement('div');
+    answerDiv.classList.add('answer');
+    const answerText = document.createElement('input');
+    answerText.type = 'text';
+    answerText.classList.add('answer-text');
+    answerText.name = `answers[${i}][]`;
+    answerText.placeholder = 'Answer Text';
+    const removeAnswerBtn = document.createElement('button');
+    removeAnswerBtn.type = 'button';
+    removeAnswerBtn.classList.add('remove-answer-btn');
+    removeAnswerBtn.textContent = 'Remove Answer';
+    removeAnswerBtn.addEventListener('click', () => {
+      answerDiv.remove();
+    });
+    answerDiv.appendChild(answerText);
+    answerDiv.appendChild(removeAnswerBtn);
+    let par = existingAnsBtn[i].parentNode;
+    par.insertBefore(answerDiv, existingAnsBtn[i]);
+  });
+}
+// add click listener to existing remove question buttons
+  const existingQuestRmvBtns = document.querySelectorAll('#remove-question-btn');
+  for (let i = 0; i < existingQuestRmvBtns.length; i++) {
+    existingQuestRmvBtns[i].addEventListener('click', () => {
+      existingQuestRmvBtns[i].parentElement.remove();
+    });
+}
+
+//add click listener to existing remove question button
+  const existingAnsRmvBtns = document.querySelectorAll('.remove-answer-btn');
+  for (let i =0; i < existingAnsRmvBtns.length; i++) {
+    existingAnsRmvBtns[i].addEventListener('click', () => {
+      existingAnsRmvBtns[i].parentElement.remove();
+    });
+  }
+
+</script>
+</body>
 
 <%- include('../partials/bottom_nav.ejs') %> 
-<%- include('../partials/footer.ejs') %>
+<%-include('../partials/footer.ejs') %>
