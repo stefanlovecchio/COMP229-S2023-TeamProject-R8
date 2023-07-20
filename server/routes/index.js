@@ -9,12 +9,7 @@ router.get('/', indexController.displayHomePage);
 /* GET home page. */
 router.get('/home', indexController.displayHomePage);
 
-/* GET serveys page. */
 
-router.get('/surveys', indexController.displaySurveysPage);
-
-/* GET serveys detail page. */
-router.get('/details', indexController.displayDetailsPage);
 
 /* GET home page. */
 router.get('/login', indexController.displayLoginPage);
