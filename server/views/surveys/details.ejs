@@ -7,6 +7,7 @@
   <div class="row">
     <div class="col-md-offset-3 col-md-6">
       <h1><%= title %></h1>
+<<<<<<< Updated upstream
       <form class="form" method="POST">
         <div class="form-group">
           <h3>Questions:</h3>
@@ -14,10 +15,20 @@
           id="nameTextField"
           placeholder="Enter the Survey Title"
           name="title" required>
+=======
+      <form class="form" method="post">
+        <div class="form-group">
+          <label for="TitleTextField">Survey Title</label>
+          <input type="text" class="form-control"
+          id="nameTextField"
+          placeholder="Enter the Survey Title"
+          name="Title" required>
+>>>>>>> Stashed changes
         </div>
 
         <div class="form-group">
           <label for="descriptionTextField">Description</label>
+<<<<<<< Updated upstream
           <input type="textarea" class="form-control"
           id="descriptionTextField"
           placeholder="Enter a survey description"
@@ -166,6 +177,53 @@ for (let i = 0; i < existingAnsBtn.length; i++) {
       });
     </script>
   </body>
+=======
+          <input type="texterea" class="form-control"
+          id="descriptionTextField"
+          placeholder="Enter the description of the Surevey"
+          name="Description" required>
+      </div>
+
+      <div class="form-group">
+        <label for="numQuestions">Number of Questions</label>
+        <input type="text" class="form-control"
+        id="numQuestions"
+        placeholder="Enter the number of questions"
+        name="numQuestions" required>
+      </div>
+
+      <!-- <div class="form-group">
+        <label for="numberofMCQuestionsTextField">Number of Questions with Multiple correct answers</label>
+        <input type="text" class="form-control"
+        id="NumberMCQTextField"
+        placeholder="Enter the number of questions that will have more than one correct answer"
+        name="numberMCQuestions" required>
+        </div>
+
+        <div class="form-group">
+          <label for="numberofSCQuestionsTextField">Number of Questions with Single correct answers</label>
+          <input type="text" class="form-control"
+          id="numberSCQTextField"
+          placeholder="Enter the number of questions that will have only one correct answer"
+          name="NumberSCQuestions" required>
+        </div> -->
+
+        <div class="form-group">
+          <label for="numberofAnswersTextField">Number of Answers per Question</label>
+          <input type="text" class="form-control"
+          id="numberAnswersTextField"
+          placeholder="Enter the number of answers that will be provided per question"
+          name="NumberAnswers" required>
+        </div>
+        
+
+        <button type="submit" class="btn btn-primary"><i class="fa fa-check-square-o"></i> Submit</button>
+        <a href="/surveys" class="btn btn-warning"><i class="fa fa-undo"></i> Cancel</a>
+      </form>
+    </div>
+  </div>
+</div>
+>>>>>>> Stashed changes
 
     <%- include('../partials/bottom_nav.ejs') %>
     <%- include('../partials/footer.ejs') %>
