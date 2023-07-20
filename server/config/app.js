@@ -80,4 +80,16 @@ app.use(function(err, req, res, next) {
   res.render('error', { title: 'Error'});
 });
 
+
+// create a User Model Instance
+let userModel = require('../models/user');
+let User = userModel.User;
+
+// implement User Authentication Strategy
+passport.use(User.createStrategy());
+
+// serialize and deserialize the User Info
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+
 module.exports = app;
