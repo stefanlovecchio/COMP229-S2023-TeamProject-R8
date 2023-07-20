@@ -10,12 +10,7 @@ router.get('/', indexController.displayHomePage);
 router.get('/home', indexController.displayHomePage);
 
 /* GET serveys page. */
-<<<<<<< Updated upstream
-//router.get('/surveys', indexController.displaySurveysPage);
 
-/* GET serveys detail page. */
-//router.get('/details', indexController.displaySurveysdetailsPage);
-=======
 router.get('/surveys', indexController.displaySurveysPage);
 
 /* GET serveys detail page. */
@@ -35,6 +30,6 @@ router.post('/register', indexController.processRegisterPage);
 
 /* GET home page. */
 router.post('/logout', indexController.performLogout);
->>>>>>> Stashed changes
+
 
 module.exports = router;
