@@ -18,7 +18,7 @@
         <button type="button" id="remove-question-btn">Remove Question</button>
         <% for(let j = 0; j < survey.questions[i].answers.length; j++) { %>
           <div id="answers-container">
-            <input type="text" name="answers[<%= i %>][answers][<%= j %>]" value="<%= survey.questions[i].answers[j] %>">
+            <input type="text" name="questions[<%= i %>][answers][<%= j %>]" value="<%= survey.questions[i].answers[j] %>">
             <button type="button" class="remove-answer-btn">Remove Answer</button>
           </div>
         <% } %>
@@ -41,15 +41,21 @@
 const addQuestionBtn = document.getElementById('add-question-btn');
 const questionsContainer = document.getElementById('questions-container');
 const row = document.getElementById('row');
+const existingAnsBtn = document.querySelectorAll('#add-answer-btn');
+
+let questionCount = 0;
+let answerCount =0;
+let count = 0;
 
 addQuestionBtn.addEventListener('click', () => {
+  questionCount++;
   const questionDiv = document.createElement('div');
   questionDiv.classList.add('question');
 
   const questionText = document.createElement('input');
   questionText.type = 'text';
   questionText.classList.add('question-text');
-  questionText.name = 'questions[]';
+  questionText.name = `questions[${questionCount}][question]`;
   questionText.placeholder = 'Question Text';
   questionText.required = true;
 
@@ -62,22 +68,24 @@ addQuestionBtn.addEventListener('click', () => {
   addAnswerBtn.textContent = 'Add Answer';
 
   addAnswerBtn.addEventListener('click', () => {
+    const answerDiv = document.createElement('div');
+    answerDiv.classList.add('answer');
+
     const answerText = document.createElement('input');
     answerText.type = 'text';
     answerText.classList.add('answer-text');
-    answerText.name = 'answers[]';
+    answerText.name = `questions[${questionCount}][answers][${answerCount}]`;
     answerText.placeholder = 'Answer Text';
     answerText.required = true;
+
     const removeAnswerBtn = document.createElement('button');
     removeAnswerBtn.type = 'button';
     removeAnswerBtn.classList.add('remove-answer-btn');
     removeAnswerBtn.textContent = 'Remove Answer';
-
     removeAnswerBtn.addEventListener('click', () => {
       answerDiv.remove();
     });
-    const answerDiv = document.createElement('div');
-    answerDiv.classList.add('answer');
+
     answerDiv.appendChild(answerText);
     answerDiv.appendChild(removeAnswerBtn);
     answersContainer.appendChild(answerDiv);
@@ -96,10 +104,10 @@ addQuestionBtn.addEventListener('click', () => {
   questionDiv.appendChild(addAnswerBtn);
   questionDiv.appendChild(removeQuestionBtn);
 
-  row.appendChild(questionDiv);
+  //row.appendChild(questionDiv);
+  questionsContainer.appendChild(questionDiv);
 });
 
-const existingAnsBtn = document.querySelectorAll('#add-answer-btn');
 //add click event listener to each existing add-answer-buttons
 
 for (let i = 0; i < existingAnsBtn.length; i++) {
