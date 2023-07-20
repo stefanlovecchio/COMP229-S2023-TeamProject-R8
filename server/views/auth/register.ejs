@@ -1,0 +1,67 @@
+
+<%- include('partials/header.ejs') %>
+
+<%- include('partials/main_nav.ejs') %>
+
+<!--Main Content-->
+<main class="container">
+<!-- message Area-->
+<% if (messages.length > 0) {%>
+    <div class="alert alert-danger">
+        <%=messages %>
+
+    </div>
+<%}%>
+
+<div class="row">
+    <div class="offset-md-4 col-md-4">
+        <h1>Please register</h1>
+        <form method="POST"autocomplete="off">
+            <fieldset class="form-group">
+                <lable for="username">Username: </lable>
+                <input type="text" class="form-control"
+                name="username" placeholder="Enter Username"
+                id="username" required autofocus>                >
+            </fieldset>
+
+            <fieldset class="form-group">
+                <lable for="password">Password: </lable>
+                <input type="password" class="form-control"
+                name="password" placeholder="Enter Password"
+                id="password" required>                >
+            </fieldset>
+
+            <fieldset class="form-group">
+                <lable for="email_address"> Email Address: </lable>
+                <input type="email" class="form-control"
+                name="email_address" placeholder="Enter Eamail Address"
+                id="email_address" required>                >
+            </fieldset>
+
+            <fieldset class="form-group">
+                <lable for="displayName">DisplayName: </lable>
+                <input type="text" class="form-control"
+                name="displayName" placeholder="Enter Display Name"
+                id="displayName" required>                >
+            </fieldset>
+
+            <fieldset class="form-group text-right">
+                <input type="submit" class="btn btn-success" valuse="Register">
+                <a href="/">
+                    <input type="button" class="btn btn-warning" value="Cancel">
+                </a>
+            </fieldset>
+
+        </form>
+    </div>
+</div>
+</main>
+
+
+<%- include('partials/bottom_nav.ejs') %>
+
+<%- include('partials/footer.ejs') %>
+
+
+
+
