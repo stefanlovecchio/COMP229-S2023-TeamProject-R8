@@ -16,6 +16,3 @@ module.exports.displaySurveysPage = (req, res, next) => {
 
 //this is routing to the home page as well?
 
-module.exports.displayDetailsPage = (req, res, next) => {
-    res.render('surveys/details', { title: 'Survey Details' });
-}

@@ -22,7 +22,7 @@ module.exports.displaySurveyPage = async (req, res, next) => {
     
 //create logic to create a new survey and details
 module.exports.displayDetailsPage = (req, res, next) => {
-    res.render('surveys/details', { title: 'Survey Details' });
+    res.render('surveys/details', { title: 'Survey Creator' });
 }
 
 
