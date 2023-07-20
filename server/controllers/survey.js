@@ -59,28 +59,28 @@ module.exports.displayDetailsPage = (req, res, next) => {
             res.render('surveys/edit', 
             {title: surveyToEdit.title,  
                 survey: surveyToEdit});
-                //console.log(surveyToEdit);
-        } catch(err) {
-            console.log(err);
-            res.status(500).send(err);
-        }
-    };
-    
-    module.exports.processEditPage = async (req, res, next) => {
-        let id = req.params.id;
-        try {
-            //console.log(JSON.stringify(req.body));
-            // Use the ID in the body of the request to find the survey
-            const survey = await Survey.findById(id);
+              } catch(err) {
+                console.log(err);
+                res.status(500).send(err);
+              }
+            };
             
-            if (!survey) {
-                return res.status(404).json({ message: 'Survey not found' });
-            }
-            
-            // Update the survey
-            survey.title = req.body.title;
-            survey.description = req.body.description;
-            survey.questions = req.body.questions;
+            module.exports.processEditPage = async (req, res, next) => {
+              let id = req.params.id;
+              console.log(JSON.stringify(req.body));
+              try {
+                // Use the ID in the body of the request to find the survey
+                const survey = await Survey.findById(id);
+                
+                if (!survey) {
+                  return res.status(404).json({ message: 'Survey not found' });
+                }
+                
+                // Update the survey
+                survey.title = req.body.title;
+                survey.description = req.body.description;
+                survey.questions = req.body.questions;
+                console.log(survey);
             
         
             // Save the survey

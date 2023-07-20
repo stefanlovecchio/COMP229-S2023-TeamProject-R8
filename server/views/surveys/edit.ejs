@@ -118,7 +118,7 @@ for (let i = 0; i < existingAnsBtn.length; i++) {
     const answerText = document.createElement('input');
     answerText.type = 'text';
     answerText.classList.add('answer-text');
-    answerText.name = `answers[${i}][]`;
+    answerText.name = `questions[${questionCount}][answers][]`;
     answerText.placeholder = 'Answer Text';
     const removeAnswerBtn = document.createElement('button');
     removeAnswerBtn.type = 'button';
