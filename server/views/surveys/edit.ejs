@@ -1,5 +1,5 @@
 <%- include('../partials/header.ejs') %> 
-<<<<<<< Updated upstream
+
 <%- include('../partials/main_nav.ejs')%>
 <head>
   <h1>Survey Editor</h1>
@@ -155,74 +155,3 @@ for (let i = 0; i < existingAnsBtn.length; i++) {
 
 <%- include('../partials/bottom_nav.ejs') %> 
 <%-include('../partials/footer.ejs') %>
-=======
-<%- include('../partials/main_nav.ejs') %>
-
-<div class="container">
-  <div class="row">
-    <div class="col-md-offset-3 col-md-6">
-      <h1><%= title %></h1>
-      <!--Edit Survey-->
-      <form class="form" method="POST" id="editedSurvey">
-        <div class="form-group">
-          <label for="NameTextField">Add Question</label>
-          <label for="answerType">Answer Type:</label><br />
-          <!-- Add an id to each radio button -->
-          <input type="radio" id="single" name="answerType" value="single" />
-          <label for="single">Single Correct Answer (Radio Buttons)</label><br />
-          <input type="radio" id="multiple" name="answerType" value="multiple" />
-          <label for="multiple">Multiple Correct Answers (Checkboxes)</label><br /><br />
-          <!-- Add a hidden input element for QuestionType -->
-          <input type="hidden" id="QuestionType" name="QuestionType" />
-          <!-- Add a hidden input element for NumberOfQuestions -->
-          <input type="hidden" name="NumberOfQuestions" value="<%= survey.numQuestions %>" />
-            <script>
-  const answerTypeRadioButtons = document.querySelectorAll('input[name="answerType"]');
-  const questionTypeInput = document.getElementById('QuestionType');
-
-  answerTypeRadioButtons.forEach((radioButton) => {
-    radioButton.addEventListener('change', () => {
-      questionTypeInput.value = radioButton.value;
-    });
-  });
-</script>
-
-          <% var colors = ["#ff00bc73", "#9100ff73", "#03a9f475",
-          "#004eff59","#00ffe773", "#00ff4e73"]; %> 
-          <% for(let count = 0; count < survey.numQuestions; count++) { %>
-            <div id="questions" style="background-color: <%= colors[Math.floor(Math.random() * colors.length)] %>;">
-              <div class="question">
-                <!-- Changed input to textarea and added name attribute -->
-                <label for="question<%= count %>">Question: <%= count + 1 %></label><br />
-                <textarea id="question<%= count %>" name="Questions[<%= count %>][Question]"></textarea><br />
-
-                <div id="answers">
-                  <% for(let i = 0; i < survey.NumberAnswers; i++) { %>
-                    <div class="answer">
-                      <!-- Changed name attribute -->
-                      <label for="answer<%= count %>_<%= i %>"> Answer <%= i + 1 %>:</label><br />
-                      <input type="text" id="answer<%= count %>_<%= i %>" name="Questions[<%= count %>][Answer][<%= i %>]"/><br />
-                      <button class="delete">Delete</button>
-                    </div>
-                  <% } %>
-                </div><br/>
-                <button id="addAnswer">Add Answer</button><br /><br />
-              </div>
-            </div>
-          <% } %>
-        </div>
-        <button id="addQuestion">Add a Question</button><br /><br />
-        <div style="margin-bottom: 3rem; display: grid; justify-content: space-around;">
-          <button class="btn btn-primary" type="submit">
-            <i class="fa fa-check-square-o"></i> Submit</button>
-          <a href="/surveys" class="btn btn-warning">
-            <i class="fa fa-undo"></i> Cancel</a>
-        </div>
-      </form>
-    </div>
-  </div>
-</div>
-
-<%- include('../partials/bottom_nav.ejs') %> 
-<%- include('../partials/footer.ejs') %>
->>>>>>> Stashed changes

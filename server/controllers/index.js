@@ -4,12 +4,8 @@ let router = express.Router();
 let mongoose = require('mongoose');
 let passport = require('passport');
 
-<<<<<<< Updated upstream
-
-=======
 let userModel = require('../models/user');
 let User = userModel.User;
->>>>>>> Stashed changes
 
 module.exports.displayHomePage = (req, res, next) => {
     res.render('index', { title: 'Home' });
@@ -21,8 +17,6 @@ module.exports.displaySurveysPage = (req, res, next) => {
 
 //this is routing to the home page as well?
 
-<<<<<<< Updated upstream
-=======
 module.exports.displayDetailsPage = (req, res, next) => {
     res.render('surveys/details', { title: 'Survey Details' });
 }
@@ -138,4 +132,3 @@ module.exports.performLogout = (req,res,next) => {
 
     });
 }
->>>>>>> Stashed changes

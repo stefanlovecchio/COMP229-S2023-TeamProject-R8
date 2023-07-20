@@ -93,13 +93,6 @@ module.exports.displayDetailsPage = (req, res, next) => {
             return res.status(500).json({ error: err.message });
           }
         };
-        
-
-      
-      
-      
-      
-      
     
     module.exports.performDelete = async (req, res, next) => {
         let id = req.params.id;
