@@ -6,42 +6,145 @@ let passport = require('passport');
 // create a reference to the model
 let Survey = require('../models/survey');
 
-//create logic to display the main list of sureveys
+
+//create logic to display the main list of surveys
 module.exports.displaySurveyPage = async (req, res, next) => {
     try {
         let surveyList = await Survey.find();
-        res.render('surveys/index', { title: 'Survey List', SurveyList: surveyList });
+        res.render('surveys/index', 
+        { title: 'Survey List', 
+        surveys: surveyList });
+        
     } catch (err) {
         console.error(err);
     }
-}
+};
     
 //create logic to create a new survey and details
 module.exports.displayDetailsPage = (req, res, next) => {
-    res.render('surveys/details', { title: 'Survey Details' });
+    res.render('surveys/details', { title: 'Survey Creator' });
 }
 
-module.exports.processDetailsPage = (req, res, next) => {
-    let newSurvey = Survey({
-        "Title": req.body.Title,
-        "Description": req.body.Description,
-        "NumberMCQuestions": req.body.NumberMCQuestions,
-        "NumberSCQuestions": req.body.NumberSCQuestions,
-        "NumberAnswers": req.body.NumberAnswers
-    });
 
-    Survey.create(newSurvey, (err, Survey) =>{
-        if(err)
-        {
+    module.exports.processAddPage = (req, res, next) => {
+        let newSurvey = new Survey({
+            "title": req.body.title,
+            "description": req.body.description,
+            questions: req.body.questions,
+        });
+    
+        Survey.create(newSurvey).then((survey) => {
+            console.log(survey);
+            res.redirect('/surveys');
+        }).catch((err) => {
             console.log(err);
-            res.end(err);
-        }
-        else
-        {
-            // refresh the book list
-            res.redirect('/survey-list');
-        }
-    });
+        });
 
-}
+    };
 
+    
+    module.exports.displayEditPage = async (req, res, next) => {
+        let id = req.params.id;
+        
+        console.log("id from params:", id);
+    
+        // You can also validate the id
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            console.log("Invalid id");
+            // Here you can decide what to do when id is invalid. You might redirect to an error page or send a specific error message.
+        }
+
+        try {
+            let surveyToEdit = await Survey.findById(id);
+            res.render('surveys/edit', 
+            {title: surveyToEdit.title,  
+                survey: surveyToEdit});
+                //console.log(surveyToEdit);
+        } catch(err) {
+            console.log(err);
+            res.status(500).send(err);
+        }
+    };
+    
+    module.exports.processEditPage = async (req, res, next) => {
+        let id = req.params.id;
+        try {
+            //console.log(JSON.stringify(req.body));
+            // Use the ID in the body of the request to find the survey
+            const survey = await Survey.findById(id);
+            
+            if (!survey) {
+                return res.status(404).json({ message: 'Survey not found' });
+            }
+            
+            // Update the survey
+            survey.title = req.body.title;
+            survey.description = req.body.description;
+            survey.questions = req.body.questions;
+            
+        
+            // Save the survey
+            const updatedSurvey = await survey.save();
+            
+            //return res.status(200).json(updatedSurvey);
+            res.redirect('/surveys');
+          } catch (err) {
+            console.log(err);  // debug line
+            return res.status(500).json({ error: err.message });
+          }
+        };
+        
+
+      
+      
+      
+      
+      
+    
+    module.exports.performDelete = async (req, res, next) => {
+        let id = req.params.id;
+    
+        try {
+            await Survey.findByIdAndRemove(id);
+            res.redirect('/surveys');
+        } catch(err) {
+            console.log(err);
+            res.status(500).send(err);
+        }
+    };
+
+    function isRequestBodyValid(body) {
+        // Check that body contains a 'questions' property
+        if (!body.questions) {
+          return false;
+        }
+      
+        // Check that 'questions' is an array
+        if (!Array.isArray(body.questions)) {
+          return false;
+        }
+      
+        // Check each question in the array
+        for (let question of body.questions) {
+          // Check that 'questionText' property exists and is a string
+          if (!question.questionText || typeof question.questionText !== 'string') {
+            return false;
+          }
+      
+          // Check that 'answers' property exists and is an array
+          if (!question.answers || !Array.isArray(question.answers)) {
+            return false;
+          }
+      
+          // Check each answer in the array
+          for (let answer of question.answers) {
+            // Check that 'answerText' property exists and is a string
+            if (!answer.answerText || typeof answer.answerText !== 'string') {
+              return false;
+            }
+          }
+        }
+      
+        // If all checks pass, return true
+        return true;
+      }

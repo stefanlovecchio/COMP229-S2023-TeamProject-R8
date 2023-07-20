@@ -3,45 +3,46 @@
 
 <%- include('../partials/main_nav.ejs') %>
 
-    <!-- MAIN CONTENT -->
-    <div class="container">
-      <div class="row">
-        <div class="col-md-offset-1 col-md-10">
-          <h3>Surveys</h3>
-         
-          <a href="/survey-list/details" class="btn btn-primary"><i class="fa fa-plus"></i> Add a Survey</a>
-          <br>
-          <div class="table-responsive">
-            <table class="table table-bordered table-striped table-hover">
-          
-                <tr class="d-flex">
-                  <th class="text-center col-2">Title</th>
-                  <th class="text-center col-4">Description</th>
-                  <th class="text-center col-1">MCQuestions</th>
-                  <th class="text-center col-1">SCQuestions</th>
-                  <th class="text-center col-2">Answers</th>
-                </tr>
-            
-            <% for(let count=0; count < SurveyList.length; count++) { %>
-              <tr class="d-flex">
-                <td class="text-center col-2"><%=SurveyList[count].Title %></td>
-                <td class="text-center col-4"><%=SurveyList[count].Description %></td>
-                <td class="text-center col-1"><%=SurveyList[count].NumberMCQuestions %></td>
-                <td class="text-center col-1"><%=SurveyList[count].NumberSCQuestions %></td>
-                <td class="text-center col-1"><%=SurveyList[count].NumberAnswers %></td>
-             
-              </tr>
+<body>
+  <h1><%= title %></h1>
+  
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">Title</th>
+        <th scope="col">Number of Questions</th>
+        <th scope="col">Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% if (surveys.length === 0) { %>
+        <tr>
+          <td colspan="3">No surveys available.</td>
+        </tr>
+      <% } else { %>
+        <% surveys.forEach(function(survey) { %>
+          <tr>
+            <td><%= survey.title %></td>
+            <td><%= survey.questions.length %></td>
+            <td class="text-center col-1">
+              <a href="/edit/<%= survey._id %>" class="btn btn-primary">
+              <i class="fa-solid fa-square-poll-horizontal"> Edit</i></a>
+            </td>
+            <td class="text-center col-1">
+              <a href="/delete/<%= survey._id %>" class="btn btn-danger sm">
+                <i class="fa fa-trash"> Delete</i></a>
+            </td>
+          </tr>
+        <% }) %>
+      <% } %>
+    </tbody>
+  </table>
+
+  <a href="/details" class="btn btn-primary">
+    <i class="fa-solid fa-plus"> Add Survey</i></a>
+</body>
 
 
-            <%}%>
-                
-              
-          </div>
-           <div class="col-md-offset-1 col-md-10 text-center">
-            <ul class="pagination pagination-lg pager" id="myPager"></ul>
-          </div>
-        </div>
-      </div>
-    </div>
+
     <%- include('../partials/bottom_nav.ejs') %>
     <%- include('../partials/footer.ejs') %>

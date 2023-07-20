@@ -39,7 +39,7 @@ app.set('view engine', 'ejs');
 //use methods
 app.use(logger('dev'));
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, '../../public')));
 app.use(express.static(path.join(__dirname, '../../node_modules')));
@@ -60,7 +60,7 @@ app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
 app.use('/', indexRouter);
-app.use('/survey-list', surveyRouter);
+app.use('/', surveyRouter);
 
 
 

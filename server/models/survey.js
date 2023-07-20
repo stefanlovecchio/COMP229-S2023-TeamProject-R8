@@ -1,30 +1,20 @@
 
 let mongoose = require('mongoose');
 
+let questionSchema = new mongoose.Schema({
+  question: String,
+  answers: [String]
+});
 
 //create a model class for surveys list
 let SurveyModel = mongoose.Schema({
-  Title: String,
-  Description: String,
-  NumberMCQuestions: Number,
-  NumberSCQuestions: Number,
-  NumberAnswers: Number
-  
-}, {collection: "surveys"});
-
-// create a model class for questions
-let QuestionModel = mongoose.Schema({
-  Survey: {type: mongoose.Schema.Types.ObjectId, ref: 'Surveys'},
-  QuestionType: Boolean,
-    NumberOfQuestions: Number,
-    Questions: [{
-      Question: String,
-    Answer: [String]
-    }]
-},
-{
-  collection: "questions"
+  title: String,
+  description: String,
+  questions: [questionSchema]
 });
 
-module.exports = mongoose.model('Questions', QuestionModel);
-module.exports = mongoose.model('Surveys', SurveyModel);
+const Survey = mongoose.model('Survey', SurveyModel);
+
+module.exports = Survey;
+
+

@@ -7,54 +7,165 @@
   <div class="row">
     <div class="col-md-offset-3 col-md-6">
       <h1><%= title %></h1>
-      <form class="form" method="post">
+      <form class="form" method="POST">
         <div class="form-group">
-          <label for="TitleTextField">Survey Title</label>
+          <h3>Questions:</h3>
           <input type="text" class="form-control"
           id="nameTextField"
           placeholder="Enter the Survey Title"
-          name="Title" required>
+          name="title" required>
         </div>
 
         <div class="form-group">
           <label for="descriptionTextField">Description</label>
-          <input type="texterea" class="form-control"
+          <input type="textarea" class="form-control"
           id="descriptionTextField"
-          placeholder="Enter the description of the Surevey"
-          name="Description" required>
+          placeholder="Enter a survey description"
+          name="description" required>
       </div>
 
-      <div class="form-group">
-        <label for="numberofMCQuestionsTextField">Number of Questions with Multiple correct answers</label>
+      <div id="questions-container">
         <input type="text" class="form-control"
-        id="NumberMCQTextField"
-        placeholder="Enter the number of questions that will have more than one correct answer"
-        name="numberMCQuestions" required>
+          id="nameTextField"
+          placeholder="Question text"
+          name="questions[0][question]" required>
+        <div class="question">
+          
+          <div class="answers-container">
+            </div>
+            <button type="button" id="add-question-btn">Add Question</button>
+            <button type="button" class="add-answer-btn" id="add-answer-btn">Add Answer
+              
+            </button><br /><br />
+    <br />
+            <div class="answer">        
+            </div>
+          </div>
+          <div id="createCancel">
+            <button type="submit">Create Survey</button><br>
+            <button type="cancel">Cancel</button>
+          </div>
         </div>
+      </div>
+    </form>
+    
+    <script>
+      // Add question functionality
+      const addQuestionBtn = document.getElementById('add-question-btn');
+      const questionsContainer = document.getElementById('questions-container');
+      const existingAnsBtn = document.querySelectorAll('#add-answer-btn');
 
-        <div class="form-group">
-          <label for="numberofSCQuestionsTextField">Number of Questions with Single correct answers</label>
-          <input type="text" class="form-control"
-          id="numberSCQTextField"
-          placeholder="Enter the number of questions that will have only one correct answer"
-          name="NumberSCQuestions" required>
-        </div>
+      let questionCount = 0;
+      let answerCount =0;
+      let count = 0;
+  
+      addQuestionBtn.addEventListener('click', () => {
+  // Increment the questionCount for each new question
+  questionCount++;
 
-        <div class="form-group">
-          <label for="numberofAnswersTextField">Number of Answers per Question</label>
-          <input type="text" class="form-control"
-          id="numberAnswersTextField"
-          placeholder="Enter the number of answers that will be provided per question"
-          name="NumberAnswers" required>
-        </div>
-        
+  const questionDiv = document.createElement('div');
+  questionDiv.classList.add('question');
 
-        <button type="submit" class="btn btn-primary"><i class="fa fa-check-square-o"></i> Submit</button>
-        <a href="/index" class="btn btn-warning"><i class="fa fa-undo"></i> Cancel</a>
-      </form>
-    </div>
-  </div>
-</div>
+  const questionText = document.createElement('input');
+  questionText.type = 'text';
+  questionText.classList.add('form-control');
+  questionText.name = `questions[${questionCount}][question]`;
+  questionText.placeholder = 'Question Text';
+  questionText.required = true;
+
+  const answersContainer = document.createElement('div');
+  answersContainer.classList.add('answers-container');
+
+  const addAnswerBtn = document.createElement('button');
+  addAnswerBtn.type = 'button';
+  addAnswerBtn.classList.add('add-answer-btn');
+  addAnswerBtn.textContent = 'Add Answer';
+  
+  const removeQuestionBtn = document.createElement('button');
+  removeQuestionBtn.type = 'button';
+  removeQuestionBtn.classList.add('remove-question-btn');
+  removeQuestionBtn.textContent = 'Remove Question';
+  removeQuestionBtn.addEventListener('click', () => {
+    questionDiv.remove();
+  });
+
+  questionDiv.appendChild(questionText);
+  questionDiv.appendChild(answersContainer);
+  questionDiv.appendChild(addAnswerBtn);
+  questionDiv.appendChild(removeQuestionBtn);
+
+  questionsContainer.appendChild(questionDiv);
+
+  addAnswerBtn.addEventListener('click', () => {
+    const answerDiv = document.createElement('div');
+    answerDiv.classList.add('answer');
+
+    const answerText = document.createElement('input');
+    answerText.type = 'text';
+    answerText.classList.add('form-control');
+    answerText.name = `questions[${questionCount}][answers][${answerCount}]`;
+    answerText.placeholder = 'Answer Text';
+    answerText.required = true;
+
+    const removeAnswerBtn = document.createElement('button');
+    removeAnswerBtn.type = 'button';
+    removeAnswerBtn.classList.add('remove-answer-btn');
+    removeAnswerBtn.textContent = 'Remove Answer';
+    removeAnswerBtn.addEventListener('click', () => {
+      answerDiv.remove();
+    });
+
+    answerDiv.appendChild(answerText);
+    answerDiv.appendChild(removeAnswerBtn);
+    answersContainer.appendChild(answerDiv);
+  });
+});
+
+
+      
+//add click event listener to each existing add-answer-buttons
+
+
+for (let i = 0; i < existingAnsBtn.length; i++) {
+  existingAnsBtn[i].addEventListener('click', () => {
+    count++;
+    const answerDiv = document.createElement('div');
+    answerDiv.classList.add('answer');
+    const answerText = document.createElement('input');
+    answerText.type = 'text';
+    answerText.classList.add('answer-text');
+    answerText.name = `questions[${questionCount}][answers][]`;
+    answerText.placeholder = 'Answer Text';
+    const removeAnswerBtn = document.createElement('button');
+    removeAnswerBtn.type = 'button';
+    removeAnswerBtn.classList.add('remove-answer-btn');
+    removeAnswerBtn.textContent = 'Remove Answer';
+    removeAnswerBtn.addEventListener('click', () => {
+      answerDiv.remove();
+    });
+    answerDiv.appendChild(answerText);
+    answerDiv.appendChild(removeAnswerBtn);
+    document.querySelector('.answers-container').appendChild(answerDiv);
+    let par = existingAnsBtn[i].parentNode;
+    par.insertBefore(answerDiv, existingAnsBtn[i]);
+  });
+}
+    
+      // Remove question functionality
+      questionsContainer.addEventListener('click', (event) => {
+        if (event.target.classList.contains('remove-question-btn')) {
+          event.target.parentNode.remove();
+        }
+      });
+    
+      // Remove answer functionality
+      questionsContainer.addEventListener('click', (event) => {
+        if (event.target.classList.contains('remove-answer-btn')) {
+          event.target.parentNode.remove();
+        }
+      });
+    </script>
+  </body>
 
     <%- include('../partials/bottom_nav.ejs') %>
     <%- include('../partials/footer.ejs') %>
