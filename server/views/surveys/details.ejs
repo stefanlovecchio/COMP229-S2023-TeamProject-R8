@@ -4,168 +4,151 @@
 <%- include('../partials/main_nav.ejs') %>
 
 <div class="container">
-  <div class="row">
-    <div class="col-md-offset-3 col-md-6">
-      <h1><%= title %></h1>
-      <form class="form" method="POST">
-        <div class="form-group">
-          <h3>Questions:</h3>
-          <input type="text" class="form-control"
-          id="nameTextField"
-          placeholder="Enter the Survey Title"
-          name="title" required>
-        </div>
-
-        <div class="form-group">
-          <label for="descriptionTextField">Description</label>
-          <input type="textarea" class="form-control"
-          id="descriptionTextField"
-          placeholder="Enter a survey description"
-          name="description" required>
-      </div>
-
-      <div id="questions-container">
-        <input type="text" class="form-control"
-          id="nameTextField"
-          placeholder="Question text"
-          name="questions[0][question]" required>
-        <div class="question">
-          
-          <div class="answers-container">
-            </div>
-            <button type="button" id="add-question-btn">Add Question</button>
-            <button type="button" class="add-answer-btn" id="add-answer-btn">Add Answer
-              
-            </button><br /><br />
-    <br />
-            <div class="answer">        
-            </div>
-          </div>
-          <div id="createCancel">
-            <button type="submit">Create Survey</button><br>
-            <button type="cancel">Cancel</button>
-          </div>
-        </div>
-      </div>
-    </form>
-    
-    <script>
-      // Add question functionality
-      const addQuestionBtn = document.getElementById('add-question-btn');
-      const questionsContainer = document.getElementById('questions-container');
-      const existingAnsBtn = document.querySelectorAll('#add-answer-btn');
-
-      let questionCount = 0;
-      let answerCount =0;
-      let count = 0;
-  
-      addQuestionBtn.addEventListener('click', () => {
-  // Increment the questionCount for each new question
-  questionCount++;
-
-  const questionDiv = document.createElement('div');
-  questionDiv.classList.add('question');
-
-  const questionText = document.createElement('input');
-  questionText.type = 'text';
-  questionText.classList.add('form-control');
-  questionText.name = `questions[${questionCount}][question]`;
-  questionText.placeholder = 'Question Text';
-  questionText.required = true;
-
-  const answersContainer = document.createElement('div');
-  answersContainer.classList.add('answers-container');
-
-  const addAnswerBtn = document.createElement('button');
-  addAnswerBtn.type = 'button';
-  addAnswerBtn.classList.add('add-answer-btn');
-  addAnswerBtn.textContent = 'Add Answer';
-  
-  const removeQuestionBtn = document.createElement('button');
-  removeQuestionBtn.type = 'button';
-  removeQuestionBtn.classList.add('remove-question-btn');
-  removeQuestionBtn.textContent = 'Remove Question';
-  removeQuestionBtn.addEventListener('click', () => {
-    questionDiv.remove();
-  });
-
-  questionDiv.appendChild(questionText);
-  questionDiv.appendChild(answersContainer);
-  questionDiv.appendChild(addAnswerBtn);
-  questionDiv.appendChild(removeQuestionBtn);
-
-  questionsContainer.appendChild(questionDiv);
-
-  addAnswerBtn.addEventListener('click', () => {
-    const answerDiv = document.createElement('div');
-    answerDiv.classList.add('answer');
-
-    const answerText = document.createElement('input');
-    answerText.type = 'text';
-    answerText.classList.add('form-control');
-    answerText.name = `questions[${questionCount}][answers][${answerCount}]`;
-    answerText.placeholder = 'Answer Text';
-    answerText.required = true;
-
-    const removeAnswerBtn = document.createElement('button');
-    removeAnswerBtn.type = 'button';
-    removeAnswerBtn.classList.add('remove-answer-btn');
-    removeAnswerBtn.textContent = 'Remove Answer';
-    removeAnswerBtn.addEventListener('click', () => {
-      answerDiv.remove();
-    });
-
-    answerDiv.appendChild(answerText);
-    answerDiv.appendChild(removeAnswerBtn);
-    answersContainer.appendChild(answerDiv);
-  });
-});
-
-
       
-//add click event listener to each existing add-answer-buttons
-
-
-for (let i = 0; i < existingAnsBtn.length; i++) {
-  existingAnsBtn[i].addEventListener('click', () => {
-    count++;
-    const answerDiv = document.createElement('div');
-    answerDiv.classList.add('answer');
-    const answerText = document.createElement('input');
-    answerText.type = 'text';
-    answerText.classList.add('answer-text');
-    answerText.name = `questions[${questionCount}][answers][]`;
-    answerText.placeholder = 'Answer Text';
-    const removeAnswerBtn = document.createElement('button');
-    removeAnswerBtn.type = 'button';
-    removeAnswerBtn.classList.add('remove-answer-btn');
-    removeAnswerBtn.textContent = 'Remove Answer';
-    removeAnswerBtn.addEventListener('click', () => {
-      answerDiv.remove();
+  <div class="col-md-offset-3 col-md-6">
+    <h1>
+      <%= title %>
+    </h1>
+    <form class="form" method="POST">
+      <div class="form-group">
+        <h3>Questions:</h3>
+        <input type="text" class="form-control" id="nameTextField" placeholder="Enter the Survey Title"
+          name="title" required>
+      </div>
+      <div class="form-group">
+        <label for="descriptionTextField">Description</label>
+        <input type="textarea" class="form-control" id="descriptionTextField"
+          placeholder="Enter a survey description" name="description" required>
+      </div>
+      <div id="questions-container">
+        <div class="question">
+        <input type="text" class="form-control" id="nameTextField" placeholder="Question text"
+          name="questions[0][question]" required>
+          <div class="answers-container">
+          </div>
+          <button type="button" class="add-answer-btn" id="add-answer-btn">Add Answer
+          </button><br />
+          <br />
+          <div class="answer">
+          </div>
+        </div>
+        <br /><button type="button" id="add-question-btn">Add Question</button>
+        <div id="createCancel">
+          <button type="submit">Create Survey</button><br>
+          <button type="cancel">Cancel</button>
+        </div>
+      </div>
+  </div>
+  </form>
+  </div> 
+  <script>
+    let questionCount = 0;
+    // Add question functionality
+    const addQuestionBtn = document.getElementById('add-question-btn');
+    const questionsContainer = document.getElementById('questions-container');
+    const existingAnsBtn = document.querySelectorAll('#add-answer-btn');
+    addQuestionBtn.addEventListener('click', () => {
+      questionCount++;
+      const questionDiv = document.createElement('div');
+      questionDiv.classList.add('question');
+      const questionText = document.createElement('input');
+      questionText.type = 'text';
+      questionText.classList.add('form-control');
+      questionText.name = `questions[${questionCount}][question]`;
+      questionText.placeholder = 'Question Text';
+      questionText.required = true;
+      const answersContainer = document.createElement('div');
+      answersContainer.classList.add('answers-container');
+      const addAnswerBtn = document.createElement('button');
+      addAnswerBtn.type = 'button';
+      addAnswerBtn.classList.add('add-answer-btn');
+      addAnswerBtn.textContent = 'Add Answer';
+      const removeQuestionBtn = document.createElement('button');
+      removeQuestionBtn.type = 'button';
+      removeQuestionBtn.classList.add('remove-question-btn');
+      removeQuestionBtn.textContent = 'Remove Question';
+      removeQuestionBtn.addEventListener('click', () => {
+        questionDiv.remove();
+        questionCount--;
+      });
+      questionDiv.appendChild(questionText);
+      questionDiv.appendChild(answersContainer);
+      questionDiv.appendChild(addAnswerBtn);
+      questionDiv.appendChild(removeQuestionBtn);
+      let allQuestions = Array.from(document.querySelectorAll('.question'));
+        // check if there are existing questions
+          if (allQuestions.length > 0) {
+            // get the last question
+            const lastQuestion = allQuestions[allQuestions.length - 1];
+            // insert the new question after the last question
+            lastQuestion.insertAdjacentElement('afterend', questionDiv);
+          } else {
+            // if no questions exist, append to questionsContainer as fallback
+            questionsContainer.appendChild(questionDiv);
+          }
+      addAnswerBtn.addEventListener('click', () => {
+        let answerCount = event.target.parentNode.querySelectorAll('.answer-text').length;
+        const answerDiv = document.createElement('div');
+        answerDiv.classList.add('answer');
+        const answerText = document.createElement('input');
+        answerText.type = 'text';
+        answerText.classList.add('answer-text');
+        answerText.name = `questions[${getQuestionIndex()}][answers][${answerCount}]`;
+        answerText.placeholder = 'Answer Text';
+        answerText.required = true;
+        const removeAnswerBtn = document.createElement('button');
+        removeAnswerBtn.type = 'button';
+        removeAnswerBtn.classList.add('remove-answer-btn');
+        removeAnswerBtn.textContent = 'Remove Answer';
+        removeAnswerBtn.addEventListener('click', () => {
+          answerDiv.remove();
+        });
+        answerDiv.appendChild(answerText);
+        answerDiv.appendChild(removeAnswerBtn);
+        answersContainer.appendChild(answerDiv);
+      });
     });
-    answerDiv.appendChild(answerText);
-    answerDiv.appendChild(removeAnswerBtn);
-    document.querySelector('.answers-container').appendChild(answerDiv);
-    let par = existingAnsBtn[i].parentNode;
-    par.insertBefore(answerDiv, existingAnsBtn[i]);
-  });
-}
-    
-      // Remove question functionality
-      questionsContainer.addEventListener('click', (event) => {
-        if (event.target.classList.contains('remove-question-btn')) {
-          event.target.parentNode.remove();
-        }
+
+
+    //add click event listener to each existing add-answer-buttons
+
+    for (let i = 0; i < existingAnsBtn.length; i++) {
+      existingAnsBtn[i].addEventListener('click', () => {
+        let answerCount = event.target.parentNode.querySelectorAll('.answer-text').length;
+        const answerDiv = document.createElement('div');
+        answerDiv.classList.add('answer');
+        const answerText = document.createElement('input');
+        answerText.type = 'text';
+        answerText.classList.add('answer-text');
+        answerText.name = `questions[${getQuestionIndex()}][answers][${answerCount}]`;
+        answerText.placeholder = 'Answer Text';
+        const removeAnswerBtn = document.createElement('button');
+        removeAnswerBtn.type = 'button';
+        removeAnswerBtn.classList.add('remove-answer-btn');
+        removeAnswerBtn.textContent = 'Remove Answer';
+        removeAnswerBtn.addEventListener('click', () => {
+          answerDiv.remove();
+          questionCount--;
+        });
+        answerDiv.appendChild(answerText);
+        answerDiv.appendChild(removeAnswerBtn);
+        document.querySelector('.answers-container').appendChild(answerDiv);
+        let par = existingAnsBtn[i].parentNode;
+        par.insertBefore(answerDiv, existingAnsBtn[i]);
       });
-    
-      // Remove answer functionality
-      questionsContainer.addEventListener('click', (event) => {
-        if (event.target.classList.contains('remove-answer-btn')) {
-          event.target.parentNode.remove();
-        }
-      });
-    </script>
+    }
+    function getQuestionIndex() {
+      let allQuestions = Array.from(document.querySelectorAll('.question'));
+      console.log('all questions: ' + allQuestions);
+      let currentQuestion = event.target.closest('.question');
+      console.log('current question' + currentQuestion);
+      let questionIndex = allQuestions.indexOf(currentQuestion);
+      console.log('question index: ' + questionIndex);
+      return questionIndex;
+    }
+  </script>
   </body>
+
 
     <%- include('../partials/bottom_nav.ejs') %>
     <%- include('../partials/footer.ejs') %>
