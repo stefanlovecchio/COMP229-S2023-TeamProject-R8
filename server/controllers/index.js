@@ -29,12 +29,12 @@ module.exports.displayLoginPage = (req,res,next)=> {
         res.render('auth/login',
         {
             title:"Login",
-            massages:req.flash('loginmassages'),
+            messages:req.flash('loginMessages'),
             displayname: req.use ? req.user.displayname:''
         });
     }
     else{
-        return res.rediirct('/');
+        return res.redirect('/');
     }
 
 }
@@ -50,8 +50,8 @@ module.exports.processLoginPage = (req,res,next) => {
         //is there a user err?
         if(!user){
 
-            req.flash('loginmassages','Authentication Error');
-            return res.rediirct('/login');
+            req.flash('loginMessages','Authentication Error');
+            return res.redirect('/login');
         }
         req.login(user,(err)=>{
 
@@ -59,7 +59,7 @@ module.exports.processLoginPage = (req,res,next) => {
             if(err){
                 return next(err);
             }
-            return res.rediirct('/survey')
+            return res.redirect('/survey')
 
         });
     })(req,res,next);
@@ -73,12 +73,12 @@ module.exports.displayRegisterPage  = (req,res,next)=> {
         res.render('auth/register',
         {
             title:"Register",
-            massages:req.flash('registermassages'),
+            messages:req.flash('registerMessages'),
             displayname: req.use ? req.user.displayname:''
         });
     }
     else{
-        return res.rediirct('/');
+        return res.redirect('/');
     }
 
 }
@@ -95,7 +95,7 @@ module.exports.processRegisterPage = (req,res,next)=> {
         console.log(err);
         if(err.name == 'UserExistsError'){
             req.flash(
-                'registerMassage',
+                'registerMessage',
                 'Registration Error: User Already Exists!'
 
             );
@@ -105,14 +105,14 @@ module.exports.processRegisterPage = (req,res,next)=> {
         return res.render('auth/register',
         {
             title:"Register",
-            massages: req.flash('registermassages'),
+            massages: req.flash('registerMessages'),
             displayname:req.user ? req.user.displayname:''
         });
     }
     else{
         //if registration success
-        return passpport.authenticate('local')(req,rez,()=>{
-            req.rediirct('/survey')
+        return passport.authenticate('local')(req,res,()=>{
+            req.redirect('/survey')
 
         });
     }
