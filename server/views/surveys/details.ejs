@@ -24,6 +24,14 @@
         <div class="question">
         <input type="text" class="form-control" id="nameTextField" placeholder="Question text"
           name="questions[0][question]" required>
+          <label for="questionType">Question type: </label>
+          <select id="questionType" name="questions[0][questionType]">
+            <option value="radio">Single Choice</option>
+            <option value="checkbox">Multiple Choice</option>
+            <option value="text">Text</option>
+            <option value="range">Slider</option>
+            <option value="image">Image</option>
+          </select>
           <div class="answers-container">
           </div>
           <button type="button" class="add-answer-btn" id="add-answer-btn">Add Answer
@@ -47,7 +55,9 @@
     const addQuestionBtn = document.getElementById('add-question-btn');
     const questionsContainer = document.getElementById('questions-container');
     const existingAnsBtn = document.querySelectorAll('#add-answer-btn');
+    //add question button click event
     addQuestionBtn.addEventListener('click', () => {
+      //add a question
       questionCount++;
       const questionDiv = document.createElement('div');
       questionDiv.classList.add('question');
@@ -57,12 +67,29 @@
       questionText.name = `questions[${questionCount}][question]`;
       questionText.placeholder = 'Question Text';
       questionText.required = true;
+      //add question type selector & options
+      const qTypeLabel = document.createElement('label');
+      qTypeLabel.innerHTML = 'Question Type:';
+      const qTypeSelect = document.createElement('select');
+      qTypeSelect.name = `questions[${questionCount}][questionType]`;
+      let newOption1 = new Option('Single Choice', 'radio');
+      qTypeSelect.add(newOption1)
+      let newOption2 = new Option('Multiple Choice', 'checkbox');
+      qTypeSelect.add(newOption2);
+      let newOption3 = new Option('Text', 'text');
+      qTypeSelect.add(newOption3);
+      let newOption4 = new Option('Slider', 'range');
+      qTypeSelect.add(newOption4);
+      let newOption5 = new Option('Image', 'image');
+      qTypeSelect.add(newOption5);
+      //create add answer button
       const answersContainer = document.createElement('div');
       answersContainer.classList.add('answers-container');
       const addAnswerBtn = document.createElement('button');
       addAnswerBtn.type = 'button';
       addAnswerBtn.classList.add('add-answer-btn');
       addAnswerBtn.textContent = 'Add Answer';
+      //create remove answer button
       const removeQuestionBtn = document.createElement('button');
       removeQuestionBtn.type = 'button';
       removeQuestionBtn.classList.add('remove-question-btn');
@@ -71,23 +98,27 @@
         questionDiv.remove();
         questionCount--;
       });
+      //attach new question
       questionDiv.appendChild(questionText);
+      questionDiv.appendChild(qTypeLabel);
+      questionDiv.appendChild(qTypeSelect);
       questionDiv.appendChild(answersContainer);
       questionDiv.appendChild(addAnswerBtn);
       questionDiv.appendChild(removeQuestionBtn);
+      //check for existing questions, insert new question after last
       let allQuestions = Array.from(document.querySelectorAll('.question'));
-        // check if there are existing questions
           if (allQuestions.length > 0) {
-            // get the last question
             const lastQuestion = allQuestions[allQuestions.length - 1];
-            // insert the new question after the last question
             lastQuestion.insertAdjacentElement('afterend', questionDiv);
           } else {
             // if no questions exist, append to questionsContainer as fallback
             questionsContainer.appendChild(questionDiv);
           }
+          //add answer button click event
       addAnswerBtn.addEventListener('click', () => {
+        //find current answer index for this question
         let answerCount = event.target.parentNode.querySelectorAll('.answer-text').length;
+        //create an answer using this counter
         const answerDiv = document.createElement('div');
         answerDiv.classList.add('answer');
         const answerText = document.createElement('input');
@@ -103,15 +134,14 @@
         removeAnswerBtn.addEventListener('click', () => {
           answerDiv.remove();
         });
+        //attach answer
         answerDiv.appendChild(answerText);
         answerDiv.appendChild(removeAnswerBtn);
         answersContainer.appendChild(answerDiv);
       });
     });
 
-
     //add click event listener to each existing add-answer-buttons
-
     for (let i = 0; i < existingAnsBtn.length; i++) {
       existingAnsBtn[i].addEventListener('click', () => {
         let answerCount = event.target.parentNode.querySelectorAll('.answer-text').length;
@@ -137,6 +167,7 @@
         par.insertBefore(answerDiv, existingAnsBtn[i]);
       });
     }
+    //get clicked question number
     function getQuestionIndex() {
       let allQuestions = Array.from(document.querySelectorAll('.question'));
       console.log('all questions: ' + allQuestions);

@@ -19,6 +19,14 @@
             <label for="questions<%= i %>">Question <%= i + 1 %></label><br />
             <div class="question">
               <input type="text" name="questions[<%= i %>][question]" value="<%= survey.questions[i].question %>">
+              <label for="questionType">Question type: </label>
+          <select id="questionType" name="questions[<%= i %>][questionType]">
+            <option value="radio" <%= survey.questions[i].questionType == "radio" ? "selected" : "" %>>Single Choice</option>
+        <option value="checkbox" <%= survey.questions[i].questionType == "checkbox" ? "selected" : "" %>>Multiple Choice</option>
+        <option value="text" <%= survey.questions[i].questionType == "text" ? "selected" : "" %>>Text</option>
+        <option value="range" <%= survey.questions[i].questionType == "range" ? "selected" : "" %>>Slider</option>
+        <option value="image" <%= survey.questions[i].questionType == "image" ? "selected" : "" %>>Image</option>
+          </select>
               <button type="button" id="remove-question-btn">Remove Question</button>
               <div id="answers-container">
                 <% for(let j = 0; j < survey.questions[i].answers.length; j++) { %>
@@ -77,6 +85,21 @@ addQuestionBtn.addEventListener('click', () => {
   questionText.name = `questions[${questionCount}][question]`;
   questionText.placeholder = 'Question Text';
   questionText.required = true;
+  //add question type selector & options
+  const qTypeLabel = document.createElement('label');
+      qTypeLabel.innerHTML = 'Question Type:';
+      const qTypeSelect = document.createElement('select');
+      qTypeSelect.name = `questions[${questionCount}][questionType]`;
+      let newOption1 = new Option('Single Choice', 'radio');
+      qTypeSelect.add(newOption1)
+      let newOption2 = new Option('Multiple Choice', 'checkbox');
+      qTypeSelect.add(newOption2);
+      let newOption3 = new Option('Text', 'text');
+      qTypeSelect.add(newOption3);
+      let newOption4 = new Option('Slider', 'range');
+      qTypeSelect.add(newOption4);
+      let newOption5 = new Option('Image', 'image');
+      qTypeSelect.add(newOption5);
 
   const answersContainer = document.createElement('div');
   answersContainer.classList.add('answers-container');
@@ -122,6 +145,8 @@ answerDiv.appendChild(questionLabel);
   });
 
   questionDiv.appendChild(questionText);
+  questionDiv.appendChild(qTypeLabel);
+      questionDiv.appendChild(qTypeSelect);
   questionDiv.appendChild(answersContainer);
   questionDiv.appendChild(addAnswerBtn);
   questionDiv.appendChild(removeQuestionBtn);
