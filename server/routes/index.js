@@ -9,18 +9,16 @@ router.get('/', indexController.displayHomePage);
 /* GET home page. */
 router.get('/home', indexController.displayHomePage);
 
-
-
-/* GET home page. */
+/* Get Route for displaying the Login Page */
 router.get('/login', indexController.displayLoginPage);
 
-/* GET home page. */
+/* Post Route for processing the Login Page */
 router.post('/login', indexController.processLoginPage);
 
-/* GET home page. */
+/* Get Route for displaying the Register Page */
 router.get('/register', indexController.displayRegisterPage);
 
-/* GET home page. */
+/* Get Route for processing the Register Page */
 router.post('/register', indexController.processRegisterPage);
 
 /* Get to perform UserLogout */

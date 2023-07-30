@@ -19,7 +19,7 @@ function requireAuth(req, res, next)
 }
 
 /* GET Route for the Survey List page - READ Operation */
-router.get('/surveys', surveyController.displaySurveyPage);
+router.get('/surveys', surveyController.displaySurveysPage);
 
 /* GET Route for displaying the Add page - CREATE Operation */
 router.get('/details', requireAuth, surveyController.displayDetailsPage);

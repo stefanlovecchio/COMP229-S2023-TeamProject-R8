@@ -8,19 +8,20 @@ let userModel = require('../models/user');
 let User = userModel.User;
 
 module.exports.displayHomePage = (req, res, next) => {
-    res.render('index', { title: 'Home' });
+    res.render('index', { title: 'Home', displayName: req.user ? req.user.displayName : '' });
 }
 
 module.exports.displaySurveysPage = (req, res, next) => {
-    res.render('surveys/index', { title: 'Survey List' });
+    res.render('index', { title: 'Survey List', displayName: req.user ? req.user.displayName : '' });
 }
-
-//this is routing to the home page as well?
 
 module.exports.displayDetailsPage = (req, res, next) => {
-    res.render('surveys/details', { title: 'Survey Details' });
+    res.render('index', { title: 'Survey Creator', displayName: req.user ? req.user.displayName : '' });
 }
 
+module.exports.displayEditPage = (req, res, next) => {
+    res.render('index', { title: 'Edit Survey', displayName: req.user ? req.user.displayName : '' });
+}
 
 module.exports.displayLoginPage = (req,res,next)=> {
     //checke if the user is ready for login
@@ -29,7 +30,7 @@ module.exports.displayLoginPage = (req,res,next)=> {
         res.render('auth/login',
         {
             title:"Login",
-            messages:req.flash('loginMessages'),
+            messages:req.flash('loginMessage'),
             displayname: req.use ? req.user.displayname:''
         });
     }
@@ -45,16 +46,14 @@ module.exports.processLoginPage = (req,res,next) => {
         //server err?
         if(err){
             return next (err);
-
         }
         //is there a user err?
         if(!user){
 
-            req.flash('loginMessages','Authentication Error');
+            req.flash('loginMessage','Authentication Error');
             return res.redirect('/login');
         }
         req.login(user,(err)=>{
-
             //server err?
             if(err){
                 return next(err);
@@ -73,46 +72,48 @@ module.exports.displayRegisterPage  = (req,res,next)=> {
         res.render('auth/register',
         {
             title:"Register",
-            messages:req.flash('registerMessages'),
-            displayname: req.use ? req.user.displayname:''
+            messages:req.flash('registerMessage'),
+            displayName: req.use ? req.user.displayName:''
         });
     }
     else{
-        return res.redirect('/surveys');
+        return res.redirect('/');
     }
 
 }
 
-module.exports.processRegisterPage = (req,res,next)=> {
+module.exports.processRegisterPage = (req,res,next) => {
+    console.log(req.body);
  //inintialize an user object 
  let newUser = new User({
     username: req.body.username,
+    password: req.body.password,
     email: req.body.email,
-    displayname: req.body.displayname
+    displayName: req.body.displayName
  });
- User.register(newUser,req.body.password,(err)=>{
+ User.register(newUser, req.body.password, (err) => {
     if(err){
         console.log(err);
+        console.log("Error: Inserting New User");
         if(err.name == 'UserExistsError'){
             req.flash(
                 'registerMessage',
                 'Registration Error: User Already Exists!'
-
             );
-            console.log('Error: User Already Exists!'
-            );
+            console.log('Error: User Already Exists!');
         }
         return res.render('auth/register',
         {
             title:"Register",
-            messages: req.flash('registerMessages'),
-            displayname:req.user ? req.user.displayname:''
+            messages: req.flash('registerMessage'),
+            displayName:req.user ? req.user.displayName:''
         });
     }
-    else{
+    else
+    {
         //if registration success
         return passport.authenticate('local')(req,res,()=>{
-            req.redirect('/survey')
+            res.redirect('/surveys')
         });
     }
  });
