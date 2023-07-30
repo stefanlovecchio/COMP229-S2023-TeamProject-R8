@@ -6,11 +6,18 @@ let passport = require('passport');
 // create a reference to the model
 let Survey = require('../models/survey');
 
+module.exports.displayDetailsPage = (req, res, next) => {
+    res.render('surveys/details', { title: 'Survey Creator',
+    displayName: req.user ? req.user.displayName : '' });
+}
+
+
+
 
 //create logic to display the main list of surveys
-module.exports.displaySurveyPage = async (req, res, next) => {
-    try {
-        let surveyList = await Survey.find();
+module.exports.displaySurveysPage = async (req, res, next) => {
+  try {
+    let surveyList = await Survey.find();
         res.render('surveys/index', 
         { title: 'Survey List', 
         surveys: surveyList });
@@ -21,9 +28,6 @@ module.exports.displaySurveyPage = async (req, res, next) => {
 };
     
 //create logic to create a new survey and details
-module.exports.displayDetailsPage = (req, res, next) => {
-    res.render('surveys/details', { title: 'Survey Creator' });
-}
 
 
     module.exports.processAddPage = (req, res, next) => {
@@ -46,7 +50,7 @@ module.exports.displayDetailsPage = (req, res, next) => {
     module.exports.displayEditPage = async (req, res, next) => {
         let id = req.params.id;
         
-        console.log("id from params:", id);
+        console.log('/n display: ' + req.user.displayName);
     
         // You can also validate the id
         if (!mongoose.Types.ObjectId.isValid(id)) {
