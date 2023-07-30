@@ -23,8 +23,8 @@ router.get('/register', indexController.displayRegisterPage);
 /* GET home page. */
 router.post('/register', indexController.processRegisterPage);
 
-/* GET home page. */
-router.post('/logout', indexController.performLogout);
+/* Get to perform UserLogout */
+router.get('/logout', indexController.performLogout);
 
 
 module.exports = router;

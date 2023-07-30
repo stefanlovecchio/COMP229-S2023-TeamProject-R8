@@ -59,7 +59,7 @@ module.exports.processLoginPage = (req,res,next) => {
             if(err){
                 return next(err);
             }
-            return res.redirect('/survey')
+            return res.redirect('/surveys')
 
         });
     })(req,res,next);
@@ -78,7 +78,7 @@ module.exports.displayRegisterPage  = (req,res,next)=> {
         });
     }
     else{
-        return res.redirect('/');
+        return res.redirect('/surveys');
     }
 
 }
@@ -105,7 +105,7 @@ module.exports.processRegisterPage = (req,res,next)=> {
         return res.render('auth/register',
         {
             title:"Register",
-            massages: req.flash('registerMessages'),
+            messages: req.flash('registerMessages'),
             displayname:req.user ? req.user.displayname:''
         });
     }
@@ -113,12 +113,9 @@ module.exports.processRegisterPage = (req,res,next)=> {
         //if registration success
         return passport.authenticate('local')(req,res,()=>{
             req.redirect('/survey')
-
         });
     }
-
  });
-
 }
 
 module.exports.performLogout = (req,res,next) => {
@@ -129,6 +126,5 @@ module.exports.performLogout = (req,res,next) => {
             return next(err);
         }
     return res.redirect('/');
-
     });
 }
