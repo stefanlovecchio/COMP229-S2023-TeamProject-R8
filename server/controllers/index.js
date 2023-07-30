@@ -11,18 +11,6 @@ module.exports.displayHomePage = (req, res, next) => {
     res.render('index', { title: 'Home', displayName: req.user ? req.user.displayName : '' });
 }
 
-module.exports.displaySurveysPage = (req, res, next) => {
-    res.render('index', { title: 'Survey List', displayName: req.user ? req.user.displayName : '' });
-}
-
-module.exports.displayDetailsPage = (req, res, next) => {
-    res.render('index', { title: 'Survey Creator', displayName: req.user ? req.user.displayName : '' });
-}
-
-module.exports.displayEditPage = (req, res, next) => {
-    res.render('index', { title: 'Edit Survey', displayName: req.user ? req.user.displayName : '' });
-}
-
 module.exports.displayLoginPage = (req,res,next)=> {
     //checke if the user is ready for login
     if(!req.User)

@@ -11,15 +11,13 @@ module.exports.displayDetailsPage = (req, res, next) => {
     displayName: req.user ? req.user.displayName : '' });
 }
 
-
-
-
 //create logic to display the main list of surveys
 module.exports.displaySurveysPage = async (req, res, next) => {
   try {
     let surveyList = await Survey.find();
         res.render('surveys/index', 
         { title: 'Survey List', 
+        displayName: req.user ? req.user.displayName : '',
         surveys: surveyList });
         
     } catch (err) {
@@ -50,8 +48,6 @@ module.exports.displaySurveysPage = async (req, res, next) => {
     module.exports.displayEditPage = async (req, res, next) => {
         let id = req.params.id;
         
-        console.log('/n display: ' + req.user.displayName);
-    
         // You can also validate the id
         if (!mongoose.Types.ObjectId.isValid(id)) {
             console.log("Invalid id");
@@ -61,7 +57,8 @@ module.exports.displaySurveysPage = async (req, res, next) => {
         try {
             let surveyToEdit = await Survey.findById(id);
             res.render('surveys/edit', 
-            {title: surveyToEdit.title,  
+            {title: surveyToEdit.title, 
+              displayName: req.user ? req.user.displayName : '', 
                 survey: surveyToEdit});
               } catch(err) {
                 console.log(err);
