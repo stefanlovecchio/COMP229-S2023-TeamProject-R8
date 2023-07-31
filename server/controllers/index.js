@@ -19,7 +19,7 @@ module.exports.displayLoginPage = (req,res,next)=> {
         {
             title:"Login",
             messages:req.flash('loginMessage'),
-            displayname: req.use ? req.user.displayname:''
+            displayname: req.user ? req.user.displayname:''
         });
     }
     else{
