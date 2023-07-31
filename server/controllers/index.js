@@ -37,7 +37,6 @@ module.exports.processLoginPage = (req,res,next) => {
         }
         //is there a user err?
         if(!user){
-
             req.flash('loginMessage','Authentication Error');
             return res.redirect('/login');
         }
@@ -47,7 +46,6 @@ module.exports.processLoginPage = (req,res,next) => {
                 return next(err);
             }
             return res.redirect('/surveys')
-
         });
     })(req,res,next);
     
