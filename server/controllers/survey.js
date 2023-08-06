@@ -29,9 +29,15 @@ module.exports.displaySurveysPage = async (req, res, next) => {
 
 
     module.exports.processAddPage = (req, res, next) => {
+      console.log(req.body);
+            const date = new Date(Date.now());
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            console.log(date.toLocaleDateString('en-US', options));
         let newSurvey = new Survey({
+            "created": date.toLocaleDateString('en-US', options),
             "title": req.body.title,
             "description": req.body.description,
+            "author": req.user.displayName,
             questions: req.body.questions,
         });
     

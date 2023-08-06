@@ -9,6 +9,9 @@
     <thead>
       <tr>
         <th scope="col">Title</th>
+        <th scope="col">Author</th>
+        <th scope="col">Description</th>
+        <th scope="col">Created</th>
         <th scope="col">Number of Questions</th>
         <th scope="col">Action</th>
       </tr>
@@ -22,6 +25,9 @@
         <% surveys.forEach(function(survey) { %>
           <tr>
             <td><%= survey.title %></td>
+            <td><%= survey.author %></td>
+            <td><%= survey.description %></td>
+            <td><%= survey.created %></td>
             <td><%= survey.questions.length %></td>
             <td class="text-center col-1">
               <a href="/edit/<%= survey._id %>" class="btn btn-primary">

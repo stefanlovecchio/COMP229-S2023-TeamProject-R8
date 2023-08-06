@@ -11,6 +11,8 @@ let questionSchema = new mongoose.Schema({
 let SurveyModel = mongoose.Schema({
   title: String,
   description: String,
+  author: String,
+  created: String,
   questions: [questionSchema]
 });
 
