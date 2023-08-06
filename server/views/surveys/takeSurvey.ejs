@@ -2,14 +2,13 @@
 <form method="post" action="/takeSurvey/<%= survey._id %>">
 <!-- print out questions and answers for each question-->
 <% for(let i = 0; i < survey.questions.length; i++) { %>
-    <div class="question">
+
     <label for="questions<%= i %>">Question <%= i + 1 %>: <%= survey.questions[i].question %></label><br />
 <!-- create inputs based on the type of question-->
-<% for(let j = 0; j < survey.questions[i].answers.length; j++) { %>
-    <div class = "answer">
+    
     <% if(survey.questions[i].questionType === "radio") { %>
         <% survey.questions[i].answers.forEach((answer, index) => { %>
-            <input type="radio" name="questions[<%= i %>][question]" value="<%= answer %>"> <%= answer %><br>
+            <input type="radio" name="questions[<%= i %>][answers][]" value="<%= answer %>"> <%= answer %><br>
         <% }); %>
 
     <% } else if(survey.questions[i].questionType === "checkbox") { %>
@@ -26,11 +25,10 @@
     <% } else if(survey.questions[i].questionType === "image") { %>
         <!-- Handle image input - maybe a file input? -->
         <input type="file" name="questions[<%= i %>][answer]"><br>
-        </div>
+        
     <% } %>
     <br>
-</div>
-    <% } %>
+
 
 <% } %>
 <button type="submit">Submit</button>
