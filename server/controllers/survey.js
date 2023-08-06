@@ -113,6 +113,38 @@ module.exports.displaySurveysPage = async (req, res, next) => {
         }
     };
 
+    module.exports.displayTakeSurveyPage = async (req, res, next) => {
+      let id = req.params.id; 
+      // You can also validate the id
+       if (!mongoose.Types.ObjectId.isValid(id)) {
+        console.log("Invalid id");
+        // Here you can decide what to do when id is invalid. You might redirect to an error page or send a specific error message.
+    }
+    try {
+        let selectedSurvey = await Survey.findById(id);
+        res.render('surveys/takeSurvey', 
+        {title: selectedSurvey.title, 
+          displayName: req.user ? req.user.displayName : '', 
+            survey: selectedSurvey});
+          } catch(err) {
+            console.log(err);
+            res.status(500).send(err);
+          }
+    }
+
+    module.exports.processTakeSurveyPage = async (req, res, next) => {
+      let id = req.params.id;
+              try {
+                // ****to do: decide how we're going to save survey results
+                // then process and save that data here
+                //redirect to the results page
+            res.redirect('/results');
+          } catch (err) {
+            console.log(err);  // debug line
+            return res.status(500).json({ error: err.message });
+          }
+    };
+
     function isRequestBodyValid(body) {
         // Check that body contains a 'questions' property
         if (!body.questions) {

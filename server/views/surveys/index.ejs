@@ -24,7 +24,10 @@
       <% } else { %>
         <% surveys.forEach(function(survey) { %>
           <tr>
-            <td><%= survey.title %></td>
+            <td>
+              <a href="/takeSurvey/<%= survey._id %>"><%= survey.title %></a>
+              
+            </td>
             <td><%= survey.author %></td>
             <td><%= survey.description %></td>
             <td><%= survey.created %></td>
