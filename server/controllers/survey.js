@@ -5,6 +5,8 @@ let passport = require('passport');
 
 // create a reference to the model
 let Survey = require('../models/survey');
+//create a reference to the results model
+let resultsModel = require('../models/results');
 
 module.exports.displayDetailsPage = (req, res, next) => {
     res.render('surveys/details', { title: 'Survey Creator',
@@ -134,16 +136,29 @@ module.exports.displaySurveysPage = async (req, res, next) => {
 
     module.exports.processTakeSurveyPage = async (req, res, next) => {
       let id = req.params.id;
+      console.log(req.body);
+      const responses = req.body;
               try {
                 // ****to do: decide how we're going to save survey results
                 // then process and save that data here
                 //redirect to the results page
+                //this is a test
+                resultsModel.create(responses);
             res.redirect('/results');
           } catch (err) {
             console.log(err);  // debug line
             return res.status(500).json({ error: err.message });
           }
     };
+
+    module.exports.displayResultsPage = async (req, res, next) => {
+      let id = req.params.id;
+      // You can also validate the id
+       if (!mongoose.Types.ObjectId.isValid(id)) {
+        console.log("Invalid id");
+        // Here you can decide what to do when id is invalid. You might redirect to an error page or send a specific error message.
+    }
+  }
 
     function isRequestBodyValid(body) {
         // Check that body contains a 'questions' property

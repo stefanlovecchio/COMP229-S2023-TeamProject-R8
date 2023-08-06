@@ -85,6 +85,7 @@ app.use(function(err, req, res, next) {
 let userModel = require('../models/user');
 let User = userModel.User;
 
+
 // implement User Authentication Strategy
 passport.use(User.createStrategy());
 

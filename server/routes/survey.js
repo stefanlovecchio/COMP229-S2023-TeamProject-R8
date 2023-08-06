@@ -40,4 +40,6 @@ router.get('/takeSurvey/:id', surveyController.displayTakeSurveyPage);
 
 router.post('/takeSurvey/:id', surveyController.processTakeSurveyPage);
 
+router.get('/results/:id', surveyController.displayResultsPage);
+
 module.exports = router;
