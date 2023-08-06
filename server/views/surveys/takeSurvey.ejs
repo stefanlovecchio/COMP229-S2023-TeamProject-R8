@@ -8,7 +8,7 @@
     
     <% if(survey.questions[i].questionType === "radio") { %>
         <% survey.questions[i].answers.forEach((answer, index) => { %>
-            <input type="radio" name="questions[<%= i %>][answers][]" value="<%= answer %>"> <%= answer %><br>
+            <input type="radio" name="questions[<%= i %>][answers]" value="<%= answer %>"> <%= answer %><br>
         <% }); %>
 
     <% } else if(survey.questions[i].questionType === "checkbox") { %>

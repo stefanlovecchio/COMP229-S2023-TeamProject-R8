@@ -137,7 +137,7 @@ module.exports.displaySurveysPage = async (req, res, next) => {
     module.exports.processTakeSurveyPage = async (req, res, next) => {
       let id = req.params.id;
       console.log(req.body);
-      const responses = req.body;
+      const responses = req.body.questions;
               try {
                 // ****to do: decide how we're going to save survey results
                 // then process and save that data here
