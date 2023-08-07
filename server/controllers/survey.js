@@ -136,14 +136,14 @@ module.exports.displaySurveysPage = async (req, res, next) => {
 
     module.exports.processTakeSurveyPage = async (req, res, next) => {
       let id = req.params.id;
-      console.log(req.body);
+      console.log('process take survey page: ' + JSON.stringify(req.body));
       const responses = req.body.questions;
               try {
-                // ****to do: decide how we're going to save survey results
-                // then process and save that data here
-                //redirect to the results page
-                //this is a test
-                resultsModel.create(responses);
+                let newResult = new resultsModel({
+                  title: req.body.title,
+                  questions: responses
+                })
+                resultsModel.create(newResult);
             res.redirect('/results');
           } catch (err) {
             console.log(err);  // debug line
