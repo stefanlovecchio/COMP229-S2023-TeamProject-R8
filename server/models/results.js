@@ -2,7 +2,8 @@ let mongoose = require('mongoose');
 
 let questionSchema = new mongoose.Schema({
   question: String,
-  answers: [String]
+  answers: [String],
+  correctAnswer: String
 });
 
 //create a model class for results list
