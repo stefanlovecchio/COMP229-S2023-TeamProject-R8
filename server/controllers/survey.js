@@ -9,7 +9,7 @@ let Survey = require('../models/survey');
 let resultsModel = require('../models/results');
 
 module.exports.displayDetailsPage = (req, res, next) => {
-    res.render('surveys/create', { title: 'Survey Creator',
+    res.render('surveys/details', { title: 'Survey Creator',
     displayName: req.user ? req.user.displayName : '' });
 }
 
@@ -40,12 +40,7 @@ module.exports.displaySurveysPage = async (req, res, next) => {
             "title": req.body.title,
             "description": req.body.description,
             "author": req.user.displayName,
-            questions: req.body.questions.map((question, index) => ({
-              question:question.question,
-              questionType:question.questionType,
-              answer:question.answers,
-              correctAnswer: question.answer[req.body.questions[index].correct]
-            }))
+            questions: req.body.questions,
         });
     
         Survey.create(newSurvey).then((survey) => {
@@ -143,7 +138,6 @@ module.exports.displaySurveysPage = async (req, res, next) => {
       let id = req.params.id;
       console.log('process take survey page: ' + JSON.stringify(req.body));
       const responses = req.body.questions;
-      
               try {
                 let newResult = new resultsModel({
                   title: req.body.title,
@@ -164,16 +158,6 @@ module.exports.displaySurveysPage = async (req, res, next) => {
         console.log("Invalid id");
         // Here you can decide what to do when id is invalid. You might redirect to an error page or send a specific error message.
     }
-    try {
-      let selectedSurvey = await Survey.findById(id);
-      res.render('surveys/results', 
-      {title: selectedSurvey.title, 
-        displayName: req.user ? req.user.displayName : '', 
-          survey: selectedSurvey});
-        } catch(err) {
-          console.log(err);
-          res.status(500).send(err);
-        }
   }
 
     function isRequestBodyValid(body) {

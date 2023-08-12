@@ -22,10 +22,10 @@ function requireAuth(req, res, next)
 router.get('/surveys', surveyController.displaySurveysPage);
 
 /* GET Route for displaying the Add page - CREATE Operation */
-router.get('/create', requireAuth, surveyController.displayDetailsPage);
+router.get('/details', requireAuth, surveyController.displayDetailsPage);
 
 /* POST Route for processing the Add page - CREATE Operation */
-router.post('/create', requireAuth, surveyController.processAddPage);
+router.post('/details', requireAuth, surveyController.processAddPage);
 
 // Get Route for displaying the Edit page - UPDATE Operation
 router.get('/edit/:id', requireAuth,  surveyController.displayEditPage);
