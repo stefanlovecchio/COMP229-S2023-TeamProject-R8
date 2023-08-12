@@ -5,7 +5,7 @@ let questionSchema = new mongoose.Schema({
   question: String,
   questionType: String,
   answers: [String],
-  correctAnswer: string
+  correctAnswer: String
 });
 
 //create a model class for surveys list

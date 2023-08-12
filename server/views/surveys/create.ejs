@@ -1,0 +1,145 @@
+
+<%- include('../partials/header.ejs') %>
+
+<%- include('../partials/main_nav.ejs') %>
+<div class="col-md-offset-3 col-md-6">
+    <h1>
+        <%= title %>
+    </h1>
+    <form class="form" id="surveyForm" action="/create/" method="post">
+        <label for="title">Survey Title:</label>
+        <input type="text" id="title" name="title" required><br><br>
+
+        <label for="description">Description:</label>
+        <textarea id="description" name="description" rows="4" required></textarea><br><br>
+
+        <div id="questionsContainer">
+            <!-- Questions will be added here depending on user input -->
+        </div>
+
+        <button type="button" id="addQuestionBtn">Add Question</button><br><br>
+
+        <button type="submit">Create Survey</button>
+        <button type="button" id="cancelBtn">Cancel</button>
+    </form>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        let questionCount = 0;
+
+        const addQuestionBtn = document.getElementById("addQuestionBtn");
+        const questionsContainer = document.getElementById("questionsContainer");
+        const cancelBtn = document.getElementById("cancelBtn");
+
+        addQuestionBtn.addEventListener("click", () => {
+            addQuestion();
+        });
+
+        cancelBtn.addEventListener("click", () => {
+            //  cancel behavior once all routing complete
+        });
+
+        function addQuestion() {
+            const questionDiv = document.createElement("div");
+            questionDiv.classList.add("question");
+
+            const questionText = document.createElement("input");
+            questionText.type = "text";
+            questionText.classList.add("form-control");
+            questionText.name = `questions[${questionCount}][question]`;
+            questionText.placeholder = "Question Text";
+            questionText.required = true;
+
+            const questionTypeLabel = document.createElement("label");
+            questionTypeLabel.textContent = "Question Type:";
+            const questionTypeSelect = document.createElement("select");
+            questionTypeSelect.classList.add("questionType-select");
+            questionTypeSelect.name = `questions[${questionCount}][questionType]`;
+
+            const singleChoiceOption = document.createElement("option");
+            singleChoiceOption.value = "single";
+            singleChoiceOption.textContent = "Single Choice";
+            const multipleChoiceOption = document.createElement("option");
+            multipleChoiceOption.value = "multiple";
+            multipleChoiceOption.textContent = "Multiple Choice";
+            const trueFalseOption = document.createElement("option");
+            trueFalseOption.value = "trueFalse";
+            trueFalseOption.textContent = "True/False";
+
+            questionTypeSelect.appendChild(singleChoiceOption);
+            questionTypeSelect.appendChild(multipleChoiceOption);
+            questionTypeSelect.appendChild(trueFalseOption);
+
+            const answersContainer = document.createElement("div");
+            answersContainer.classList.add("answers-container");
+
+            const addAnswerBtn = document.createElement("button");
+            addAnswerBtn.type = "button";
+            addAnswerBtn.textContent = "Add Answer";
+            addAnswerBtn.addEventListener("click", () => {
+                addAnswer(answersContainer, questionCount);
+            });
+
+            const removeQuestionBtn = document.createElement("button");
+            removeQuestionBtn.type = "button";
+            removeQuestionBtn.textContent = "Remove Question";
+            removeQuestionBtn.addEventListener("click", () => {
+                questionDiv.remove();
+            });
+
+            questionDiv.appendChild(questionText);
+            questionDiv.appendChild(questionTypeLabel);
+            questionDiv.appendChild(questionTypeSelect);
+            questionDiv.appendChild(answersContainer);
+            questionDiv.appendChild(addAnswerBtn);
+            questionDiv.appendChild(removeQuestionBtn);
+
+            questionsContainer.appendChild(questionDiv);
+            questionCount++;
+        }
+
+        function addAnswer(answersContainer, questionIndex) {
+            const answerDiv = document.createElement("div");
+            answerDiv.classList.add("answer");
+
+            const answerText = document.createElement("input");
+            answerText.type = "text";
+            answerText.classList.add("answer-text");
+            answerText.name = `questions[${questionIndex}][answers][]`;
+            answerText.placeholder = "Answer Text";
+            answerText.required = true;
+
+            const correctAnswerLabel = document.createElement("label");
+            correctAnswerLabel.textContent = "Correct Answer";
+
+            const correctAnswerCheckbox = document.createElement("input");
+            correctAnswerCheckbox.type = "checkbox";
+            correctAnswerCheckbox.classList.add("correct-answer-checkbox");
+            correctAnswerCheckbox.name = `questions[${questionIndex}][correct][]`;
+            correctAnswerCheckbox.value = answersContainer.querySelectorAll(".answer").length;
+
+            const removeAnswerBtn = document.createElement("button");
+            removeAnswerBtn.type = "button";
+            removeAnswerBtn.textContent = "Remove Answer";
+            removeAnswerBtn.addEventListener("click", () => {
+                answerDiv.remove();
+            });
+
+            answerDiv.appendChild(answerText);
+            answerDiv.appendChild(correctAnswerLabel);
+            correctAnswerLabel.appendChild(correctAnswerCheckbox);
+            answerDiv.appendChild(removeAnswerBtn);
+
+            answersContainer.appendChild(answerDiv);
+        }
+    });
+</script>
+
+
+
+
+
+
+<%- include('../partials/bottom_nav.ejs') %>
+<%- include('../partials/footer.ejs') %>
