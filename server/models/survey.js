@@ -4,8 +4,7 @@ let mongoose = require('mongoose');
 let questionSchema = new mongoose.Schema({
   question: String,
   questionType: String,
-  answers: [String],
-  correctAnswer: string
+  answers: [String]
 });
 
 //create a model class for surveys list

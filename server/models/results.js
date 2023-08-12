@@ -2,8 +2,7 @@ let mongoose = require('mongoose');
 
 let questionSchema = new mongoose.Schema({
   question: String,
-  answers: [String],
-  correctAnswer: String
+  answers: [String]
 });
 
 //create a model class for results list
