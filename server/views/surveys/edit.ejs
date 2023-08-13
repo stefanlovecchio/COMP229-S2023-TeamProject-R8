@@ -28,8 +28,13 @@
         <option value="checkbox" <%= survey.questions[i].questionType == "checkbox" ? "selected" : "" %>>Multiple Choice</option>
         <option value="text" <%= survey.questions[i].questionType == "text" ? "selected" : "" %>>Text</option>
         <option value="range" <%= survey.questions[i].questionType == "range" ? "selected" : "" %>>Slider</option>
-        <option value="image" <%= survey.questions[i].questionType == "image" ? "selected" : "" %>>Image</option>
           </select>
+          <% if (survey.questions[i].questionType == "range") { %>
+          <label for="min">Min Value:  </label>
+          <input type="text" name="questions[<%= i %>][min]" value="<%= survey.questions[i].min %>"><br />
+          <label for="max">Max Value: </label>
+          <input type="text" name="questions[<%= i %>][max]" value="<%= survey.questions[i].max %>"><br />
+          <% } %>
               <button type="button" id="remove-question-btn">Remove Question</button>
               <div id="answers-container">
                 <% for(let j = 0; j < survey.questions[i].answers.length; j++) { %>

@@ -137,6 +137,13 @@ module.exports.displaySurveysPage = async (req, res, next) => {
       let id = req.params.id;
       console.log('process take survey page: ' + JSON.stringify(req.body));
       const responses = req.body.questions;
+      //if only one answer, make it an array to conform to the schema
+      responses.forEach(question => {
+        if (question.answer) {
+          question.answers = [question.answer];
+          delete question.answer;
+        }
+      });
               try {
                 let newResult = new resultsModel({
                   displayName: req.user ? req.user.displayName : '',
