@@ -10,12 +10,11 @@ let ResultModel = mongoose.Schema({
   title: String,
   surveyId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Survey', // 
+    ref: 'Survey', 
   },
   userId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User', 
-
 },
   questions: [questionSchema]
 });
