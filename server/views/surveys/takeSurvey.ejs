@@ -26,18 +26,16 @@
         <textarea name="questions[<%= i %>][answer]"></textarea><br>
 
     <% } else if(survey.questions[i].questionType === "range") { %>
-        <input type="range" name="questions[<%= i %>][answer]"><br>
-
-    <% } else if(survey.questions[i].questionType === "image") { %>
-        <!-- Handle image input - maybe a file input? -->
-        <input type="file" name="questions[<%= i %>][answer]"><br>
-        
-    <% } %>
+        <% survey.questions[i].answers.forEach((answer, index) => { %>
+        <label> <%= survey.questions[i].answers[index] %> </label>
+        <input type="range" name="questions[<%= i %>][answer]" min="<%= survey.questions[i].min %>" 
+        max="<%= survey.questions[i].max %>" value="<%= answer %>"> <br>
+        <% })}  %>
+    <% }  %>
     <br>
 
 
-<% } %>
-<button type="submit">Submit test</button>
+<button type="submit">Submit</button>
 </form>
  <!-- Add a script to handle the button click and redirect to results -->
  <script>

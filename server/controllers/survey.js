@@ -39,6 +39,8 @@ module.exports.displaySurveysPage = async (req, res, next) => {
             "created": date.toLocaleDateString('en-US', options),
             "title": req.body.title,
             "description": req.body.description,
+            "min": req.body.min,
+            "max": req.body.max,
             "author": req.user.displayName,
             questions: req.body.questions,
         });
@@ -55,13 +57,11 @@ module.exports.displaySurveysPage = async (req, res, next) => {
     
     module.exports.displayEditPage = async (req, res, next) => {
         let id = req.params.id;
-        
         // You can also validate the id
         if (!mongoose.Types.ObjectId.isValid(id)) {
             console.log("Invalid id");
             // Here you can decide what to do when id is invalid. You might redirect to an error page or send a specific error message.
         }
-
         try {
             let surveyToEdit = await Survey.findById(id);
             res.render('surveys/edit', 
@@ -80,7 +80,6 @@ module.exports.displaySurveysPage = async (req, res, next) => {
               try {
                 // Use the ID in the body of the request to find the survey
                 const survey = await Survey.findById(id);
-                
                 if (!survey) {
                   return res.status(404).json({ message: 'Survey not found' });
                 }
@@ -138,8 +137,17 @@ module.exports.displaySurveysPage = async (req, res, next) => {
       let id = req.params.id;
       console.log('process take survey page: ' + JSON.stringify(req.body));
       const responses = req.body.questions;
+      //if only one answer, make it an array to conform to the schema
+      responses.forEach(question => {
+        if (question.answer) {
+          question.answers = [question.answer];
+          delete question.answer;
+        }
+      });
               try {
                 let newResult = new resultsModel({
+                  displayName: req.user ? req.user.displayName : '',
+                  surveyId: id,
                   title: req.body.title,
                   questions: responses
                 })

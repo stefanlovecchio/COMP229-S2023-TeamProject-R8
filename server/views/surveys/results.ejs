@@ -12,13 +12,13 @@
          <p>
            <%= answer %>
            <% if (survey.questions[i].userAnswers && survey.questions[i].userAnswers.includes(index.toString())) { %>
-             - Your answer was: <%= answer %>
+             <strong>Your answer was:</strong> <%= answer %>
            <% } %>
          </p>
        <% } else if (survey.questions[i].questionType === 'text' || survey.questions[i].questionType === 'range') { %>
          <p>
            <% if (survey.questions[i].userAnswers) { %>
-             Your answer was: <%= survey.questions[i].userAnswers %>
+             <strong>Your answer was: </strong><%= survey.questions[i].userAnswers %>
            <% } %>
          </p>
        <% } %>
