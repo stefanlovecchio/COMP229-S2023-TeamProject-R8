@@ -1,10 +1,9 @@
 <%- include('../partials/header.ejs') %>
-
 <%- include('../partials/main_nav.ejs') %>
 
 <body>
   <h1><%= title %></h1>
-  
+  <!-- survey list table-->
   <table class="table">
     <thead>
       <tr>
@@ -17,6 +16,7 @@
       </tr>
     </thead>
     <tbody>
+      <!-- if surveys exist, list them -->
       <% if (surveys.length === 0) { %>
         <tr>
           <td colspan="3">No surveys available.</td>
@@ -25,17 +25,20 @@
         <% surveys.forEach(function(survey) { %>
           <tr>
             <td>
+              <!-- hyperlink survey title to take take survey page -->
               <a href="/takeSurvey/<%= survey._id %>"><%= survey.title %></a>
-              
             </td>
+            <!-- table column info-->
             <td><%= survey.author %></td>
             <td><%= survey.description %></td>
             <td><%= survey.created %></td>
             <td><%= survey.questions.length %></td>
+            <!-- edit button-->
             <td class="text-center col-1">
               <a href="/edit/<%= survey._id %>" class="btn btn-primary">
               <i class="fa-solid fa-square-poll-horizontal"> Edit</i></a>
             </td>
+            <!-- delete button-->
             <td class="text-center col-1">
               <a href="/delete/<%= survey._id %>" class="btn btn-danger sm">
                 <i class="fa fa-trash"> Delete</i></a>
@@ -45,12 +48,10 @@
       <% } %>
     </tbody>
   </table>
-
+<!-- add survey button-->
   <a href="/details" class="btn btn-primary">
     <i class="fa-solid fa-plus"> Add Survey</i></a>
 </body>
-
-
 
     <%- include('../partials/bottom_nav.ejs') %>
     <%- include('../partials/footer.ejs') %>

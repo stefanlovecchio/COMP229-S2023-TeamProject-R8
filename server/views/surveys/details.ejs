@@ -49,6 +49,7 @@
   </div>
   </form>
   </div> 
+
   <script>
     let questionCount = 0;
     // Add question functionality
@@ -127,14 +128,16 @@
         answerText.name = `questions[${getQuestionIndex()}][answers][${answerCount}]`;
         answerText.placeholder = 'Answer Text';
         answerText.required = true;
+        //create a remove answer button
         const removeAnswerBtn = document.createElement('button');
         removeAnswerBtn.type = 'button';
         removeAnswerBtn.classList.add('remove-answer-btn');
         removeAnswerBtn.textContent = 'Remove Answer';
+        //remove answer button click event
         removeAnswerBtn.addEventListener('click', () => {
           answerDiv.remove();
         });
-        //attach answer
+        //attach new answer elements
         answerDiv.appendChild(answerText);
         answerDiv.appendChild(removeAnswerBtn);
         answersContainer.appendChild(answerDiv);
@@ -144,6 +147,7 @@
     //add click event listener to each existing add-answer-buttons
     for (let i = 0; i < existingAnsBtn.length; i++) {
       existingAnsBtn[i].addEventListener('click', () => {
+        //create an answer element
         let answerCount = event.target.parentNode.querySelectorAll('.answer-text').length;
         const answerDiv = document.createElement('div');
         answerDiv.classList.add('answer');
@@ -152,14 +156,17 @@
         answerText.classList.add('answer-text');
         answerText.name = `questions[${getQuestionIndex()}][answers][${answerCount}]`;
         answerText.placeholder = 'Answer Text';
+        //create remove answer button
         const removeAnswerBtn = document.createElement('button');
         removeAnswerBtn.type = 'button';
         removeAnswerBtn.classList.add('remove-answer-btn');
         removeAnswerBtn.textContent = 'Remove Answer';
+        //remove answer click event
         removeAnswerBtn.addEventListener('click', () => {
           answerDiv.remove();
           questionCount--;
         });
+        //attach answer elements to DOM
         answerDiv.appendChild(answerText);
         answerDiv.appendChild(removeAnswerBtn);
         document.querySelector('.answers-container').appendChild(answerDiv);

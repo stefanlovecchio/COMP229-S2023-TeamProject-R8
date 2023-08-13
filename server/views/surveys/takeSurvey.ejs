@@ -1,30 +1,28 @@
 <%- include('../partials/header.ejs') %>
-
 <%- include('../partials/main_nav.ejs') %>
-
 
 <body>
   <h1><%= title %></h1>
+  <!-- take survey form-->
   <form method="post" action="/<%= survey._id %>/results">
 <!-- print out questions and answers for each question-->
 <% for(let i = 0; i < survey.questions.length; i++) { %>
-
     <label for="questions<%= i %>">Question <%= i + 1 %>: <%= survey.questions[i].question %></label><br />
-<!-- create inputs based on the type of question-->
-    
+<!-- create inputs based on the type of question-->  
+<!-- single choice -->
     <% if(survey.questions[i].questionType === "radio") { %>
         <% survey.questions[i].answers.forEach((answer, index) => { %>
             <input type="radio" name="questions[<%= i %>][answers]" value="<%= answer %>"> <%= answer %><br>
         <% }); %>
-
+<!-- multiple choice-->
     <% } else if(survey.questions[i].questionType === "checkbox") { %>
         <% survey.questions[i].answers.forEach((answer, index) => { %>
             <input type="checkbox" name="questions[<%= i %>][answers][]" value="<%= answer %>"> <%= answer %><br>
         <% }); %>
-
+<!-- text input -->
     <% } else if(survey.questions[i].questionType === "text") { %>
         <textarea name="questions[<%= i %>][answer]"></textarea><br>
-
+<!-- range -->
     <% } else if(survey.questions[i].questionType === "range") { %>
         <% survey.questions[i].answers.forEach((answer, index) => { %>
         <label> <%= survey.questions[i].answers[index] %> </label>
@@ -33,24 +31,22 @@
         <% })}  %>
     <% }  %>
     <br>
-
-
+    <!-- submit button -->
 <button type="submit">Submit</button>
 </form>
+
  <!-- Add a script to handle the button click and redirect to results -->
  <script>
     document.addEventListener("DOMContentLoaded", () => {
       const submitBtn = document.getElementById("submitBtn");
-      
       submitBtn.addEventListener("click", () => {
+        //save surveyId
         const surveyId = "<%= survey._id %>";
         window.location.href = `/results/${surveyId}`;
       });
     });
   </script>
-
 </body>
-
 
    <%- include('../partials/bottom_nav.ejs') %>
     <%- include('../partials/footer.ejs') %>

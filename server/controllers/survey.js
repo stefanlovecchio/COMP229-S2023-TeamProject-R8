@@ -1,217 +1,170 @@
-let express = require('express');
+let express = require("express");
 let router = express.Router();
-let mongoose = require('mongoose');
-let passport = require('passport');
+let mongoose = require("mongoose");
+let passport = require("passport");
 
 // create a reference to the model
-let Survey = require('../models/survey');
+let Survey = require("../models/survey");
 //create a reference to the results model
-let resultsModel = require('../models/results');
+let resultsModel = require("../models/results");
 
+//display the add survey page
 module.exports.displayDetailsPage = (req, res, next) => {
-    res.render('surveys/details', { title: 'Survey Creator',
-    displayName: req.user ? req.user.displayName : '' });
-}
+  res.render("surveys/details", {
+    title: "Survey Creator",
+    displayName: req.user ? req.user.displayName : "",
+  });
+};
 
-//create logic to display the main list of surveys
+// display the list of surveys
 module.exports.displaySurveysPage = async (req, res, next) => {
   try {
     let surveyList = await Survey.find();
-        res.render('surveys/index', 
-        { title: 'Survey List', 
-        displayName: req.user ? req.user.displayName : '',
-        surveys: surveyList });
-        
-    } catch (err) {
-        console.error(err);
-    }
+    res.render("surveys/index", {
+      title: "Survey List",
+      displayName: req.user ? req.user.displayName : "",
+      surveys: surveyList,
+    });
+  } catch (err) {
+    console.error(err);
+  }
 };
-    
-//create logic to create a new survey and details
 
+//logic to create a new survey
+module.exports.processAddPage = (req, res, next) => {
+  //get date created
+  const date = new Date(Date.now());
+  const options = { year: "numeric", month: "long", day: "numeric" };
+  let newSurvey = new Survey({
+    created: date.toLocaleDateString("en-US", options),
+    title: req.body.title,
+    description: req.body.description,
+    min: req.body.min,
+    max: req.body.max,
+    author: req.user.displayName,
+    questions: req.body.questions,
+  });
+  //create survey
+  Survey.create(newSurvey)
+    .then((survey) => {
+      res.redirect("/surveys");
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
 
-    module.exports.processAddPage = (req, res, next) => {
-      console.log(req.body);
-            const date = new Date(Date.now());
-            const options = { year: 'numeric', month: 'long', day: 'numeric' };
-            console.log(date.toLocaleDateString('en-US', options));
-        let newSurvey = new Survey({
-            "created": date.toLocaleDateString('en-US', options),
-            "title": req.body.title,
-            "description": req.body.description,
-            "min": req.body.min,
-            "max": req.body.max,
-            "author": req.user.displayName,
-            questions: req.body.questions,
-        });
-    
-        Survey.create(newSurvey).then((survey) => {
-            console.log(survey);
-            res.redirect('/surveys');
-        }).catch((err) => {
-            console.log(err);
-        });
+// display the edit page
+module.exports.displayEditPage = async (req, res, next) => {
+  let id = req.params.id;
+  try {
+    let surveyToEdit = await Survey.findById(id);
+    res.render("surveys/edit", {
+      title: surveyToEdit.title,
+      displayName: req.user ? req.user.displayName : "",
+      survey: surveyToEdit,
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(500).send(err);
+  }
+};
 
-    };
+//update the survey
+module.exports.processEditPage = async (req, res, next) => {
+  let id = req.params.id;
+  try {
+    // Use the ID in the body of the request to find the survey
+    const survey = await Survey.findById(id);
+    if (!survey) {
+      return res.status(404).json({ message: "Survey not found" });
+    }
+    // Save the survey with the new data
+    survey.title = req.body.title;
+    survey.description = req.body.description;
+    survey.questions = req.body.questions;
+    const updatedSurvey = await survey.save();
+    res.redirect("/surveys");
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({ error: err.message });
+  }
+};
 
-    
-    module.exports.displayEditPage = async (req, res, next) => {
-        let id = req.params.id;
-        // You can also validate the id
-        if (!mongoose.Types.ObjectId.isValid(id)) {
-            console.log("Invalid id");
-            // Here you can decide what to do when id is invalid. You might redirect to an error page or send a specific error message.
-        }
-        try {
-            let surveyToEdit = await Survey.findById(id);
-            res.render('surveys/edit', 
-            {title: surveyToEdit.title, 
-              displayName: req.user ? req.user.displayName : '', 
-                survey: surveyToEdit});
-              } catch(err) {
-                console.log(err);
-                res.status(500).send(err);
-              }
-            };
-            
-            module.exports.processEditPage = async (req, res, next) => {
-              let id = req.params.id;
-              console.log(JSON.stringify(req.body));
-              try {
-                // Use the ID in the body of the request to find the survey
-                const survey = await Survey.findById(id);
-                if (!survey) {
-                  return res.status(404).json({ message: 'Survey not found' });
-                }
-                
-                // Update the survey
-                survey.title = req.body.title;
-                survey.description = req.body.description;
-                survey.questions = req.body.questions;
-                console.log(survey);
-            
-        
-            // Save the survey
-            const updatedSurvey = await survey.save();
-            
-            //return res.status(200).json(updatedSurvey);
-            res.redirect('/surveys');
-          } catch (err) {
-            console.log(err);  // debug line
-            return res.status(500).json({ error: err.message });
-          }
-        };
-    
-    module.exports.performDelete = async (req, res, next) => {
-        let id = req.params.id;
-    
-        try {
-            await Survey.findByIdAndRemove(id);
-            res.redirect('/surveys');
-        } catch(err) {
-            console.log(err);
-            res.status(500).send(err);
-        }
-    };
+//delete a survey
+module.exports.performDelete = async (req, res, next) => {
+  let id = req.params.id;
+  try {
+    await Survey.findByIdAndRemove(id);
+    res.redirect("/surveys");
+  } catch (err) {
+    console.log(err);
+    res.status(500).send(err);
+  }
+};
 
-    module.exports.displayTakeSurveyPage = async (req, res, next) => {
-      let id = req.params.id; 
+//display take survey page
+module.exports.displayTakeSurveyPage = async (req, res, next) => {
+  let id = req.params.id;
+  try {
+    let selectedSurvey = await Survey.findById(id);
+    res.render("surveys/takeSurvey", {
+      title: selectedSurvey.title,
+      displayName: req.user ? req.user.displayName : "",
+      survey: selectedSurvey,
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(500).send(err);
+  }
+};
+
+//process take survey page
+module.exports.processTakeSurveyPage = async (req, res, next) => {
+  let id = req.params.id;
+  console.log("process take survey page: " + JSON.stringify(req.body));
+  const responses = req.body.questions;
+  //if only one answer, make it an array to conform to the schema
+  responses.forEach((question) => {
+    if (question.answer) {
+      question.answers = [question.answer];
+      delete question.answer;
+    }
+  });
+  //save to Results object
+  try {
+    let newResult = new resultsModel({
+      displayName: req.user ? req.user.displayName : "",
+      userId: req.user._id,
+      surveyId: id,
+      title: req.body.title,
+      questions: responses,
+    });
+    resultsModel.create(newResult);
+    res.redirect(`/results/${id}`);
+  } catch (err) {
+    console.log(err); // debug line
+    return res.status(500).json({ error: err.message });
+  }
+};
+
+module.exports.displayResultsPage = async (req, res, next) => {
+  /* let id = req.params.id;
       // You can also validate the id
        if (!mongoose.Types.ObjectId.isValid(id)) {
         console.log("Invalid id");
-        // Here you can decide what to do when id is invalid. You might redirect to an error page or send a specific error message.
-    }
-    try {
-        let selectedSurvey = await Survey.findById(id);
-        res.render('surveys/takeSurvey', 
-        {title: selectedSurvey.title, 
-          displayName: req.user ? req.user.displayName : '', 
-            survey: selectedSurvey});
-          } catch(err) {
-            console.log(err);
-            res.status(500).send(err);
-          }
-    }
-
-    module.exports.processTakeSurveyPage = async (req, res, next) => {
-      let id = req.params.id;
-      console.log('process take survey page: ' + JSON.stringify(req.body));
-      const responses = req.body.questions;
-      //if only one answer, make it an array to conform to the schema
-      responses.forEach(question => {
-        if (question.answer) {
-          question.answers = [question.answer];
-          delete question.answer;
-        }
-      });
-              try {
-                let newResult = new resultsModel({
-                  displayName: req.user ? req.user.displayName : '',
-                  userId: req.user._id,
-                  surveyId: id,
-                  title: req.body.title,
-                  questions: responses
-                })
-                resultsModel.create(newResult);
-                res.redirect(`/results/${id}`);
-          } catch (err) {
-            console.log(err);  // debug line
-            return res.status(500).json({ error: err.message });
-          }
-    };
-
-    module.exports.displayResultsPage = async (req, res, next) => {
-      /* let id = req.params.id;
-      // You can also validate the id
-       if (!mongoose.Types.ObjectId.isValid(id)) {
-        console.log("Invalid id");
-        // Here you can decide what to do when id is invalid. You might redirect to an error page or send a specific error message.
     }
   } */
-      const surveyId = req.params.id;
+  const surveyId = req.params.id;
 
-      // Fetch survey data by ID
-       Survey.findById(surveyId)
-      .then(survey => {
-          res.render('surveys/results', { title: survey.title, survey });
-      })
-      .catch(err => {
-          console.error(err);
-          res.status(500).send('Internal Server Error');
-      });
-    };
-    function isRequestBodyValid(body) {
-        // Check that body contains a 'questions' property
-        if (!body.questions) {
-          return false;
-        }
-      
-        // Check that 'questions' is an array
-        if (!Array.isArray(body.questions)) {
-          return false;
-        }
-      
-        // Check each question in the array
-        for (let question of body.questions) {
-          // Check that 'questionText' property exists and is a string
-          if (!question.questionText || typeof question.questionText !== 'string') {
-            return false;
-          }
-      
-          // Check that 'answers' property exists and is an array
-          if (!question.answers || !Array.isArray(question.answers)) {
-            return false;
-          }
-      
-          // Check each answer in the array
-          for (let answer of question.answers) {
-            // Check that 'answerText' property exists and is a string
-            if (!answer.answerText || typeof answer.answerText !== 'string') {
-              return false;
-            }
-          }
-        }
-      
-        // If all checks pass, return true
-        return true;
-      }
+  // Fetch survey data by ID
+  Survey.findById(surveyId)
+    .then((survey) => {
+      res.render("surveys/results", { title: survey.title, survey });
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send("Internal Server Error");
+    });
+};
+
