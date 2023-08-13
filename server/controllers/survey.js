@@ -134,8 +134,9 @@ module.exports.processTakeSurveyPage = async (req, res, next) => {
   //save to Results object
   try {
     let newResult = new resultsModel({
+      //if user signed in, save displayName and userId
       displayName: req.user ? req.user.displayName : "",
-      userId: req.user._id,
+      userId: req.user ? req.user._id : null,
       surveyId: id,
       title: req.body.title,
       questions: responses,
