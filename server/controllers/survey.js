@@ -147,6 +147,7 @@ module.exports.displaySurveysPage = async (req, res, next) => {
               try {
                 let newResult = new resultsModel({
                   displayName: req.user ? req.user.displayName : '',
+                  userId: req.user._id,
                   surveyId: id,
                   title: req.body.title,
                   questions: responses
