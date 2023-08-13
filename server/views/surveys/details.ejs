@@ -30,7 +30,6 @@
             <option value="checkbox">Multiple Choice</option>
             <option value="text">Text</option>
             <option value="range">Slider</option>
-            <option value="image">Image</option>
           </select>
           <div class="answers-container">
           </div>
@@ -80,8 +79,6 @@
       qTypeSelect.add(newOption3);
       let newOption4 = new Option('Slider', 'range');
       qTypeSelect.add(newOption4);
-      let newOption5 = new Option('Image', 'image');
-      qTypeSelect.add(newOption5);
       //create add answer button
       const answersContainer = document.createElement('div');
       answersContainer.classList.add('answers-container');
@@ -98,6 +95,7 @@
         questionDiv.remove();
         questionCount--;
       });
+      
       //attach new question
       questionDiv.appendChild(questionText);
       questionDiv.appendChild(qTypeLabel);
@@ -131,9 +129,26 @@
         removeAnswerBtn.type = 'button';
         removeAnswerBtn.classList.add('remove-answer-btn');
         removeAnswerBtn.textContent = 'Remove Answer';
+        let answerType = event.target.parentNode.querySelector('select').value;
+        switch (answerType) {
+          case 'range': 
+          const rangeMin = document.createElement('input');
+          rangeMin.type = 'number';
+          rangeMin.name = `questions[${getQuestionIndex()}][min]`;
+          rangeMin.placeholder = 'Range Mininum Value';
+          answerDiv.appendChild(rangeMin);
+          break;
+          const rangeMax = document.createElement('input');
+          rangeMax.type = 'number';
+          rangeMax.name = `questions[${getQuestionIndex()}][max]`;
+          rangeMax.placeholder = 'Range Maximum Value';
+          answerDiv.appendChild(rangeMax);
+          break;
+        }
         removeAnswerBtn.addEventListener('click', () => {
           answerDiv.remove();
         });
+        
         //attach answer
         answerDiv.appendChild(answerText);
         answerDiv.appendChild(removeAnswerBtn);
@@ -156,10 +171,27 @@
         removeAnswerBtn.type = 'button';
         removeAnswerBtn.classList.add('remove-answer-btn');
         removeAnswerBtn.textContent = 'Remove Answer';
+        let answerType = event.target.parentNode.querySelector('select').value;
+        switch (answerType) {
+          case 'range': 
+          const rangeMin = document.createElement('input');
+          rangeMin.type = 'number';
+          rangeMin.name = `questions[${getQuestionIndex()}][min]`;
+          rangeMin.placeholder = 'Range Mininum Value';
+          answerDiv.appendChild(rangeMin);
+          break;
+          const rangeMax = document.createElement('input');
+          rangeMax.type = 'number';
+          rangeMax.name = `questions[${getQuestionIndex()}][max]`;
+          rangeMax.placeholder = 'Range Maximum Value';
+          answerDiv.appendChild(rangeMax);
+          break;
+        }
         removeAnswerBtn.addEventListener('click', () => {
           answerDiv.remove();
           questionCount--;
         });
+        
         answerDiv.appendChild(answerText);
         answerDiv.appendChild(removeAnswerBtn);
         document.querySelector('.answers-container').appendChild(answerDiv);

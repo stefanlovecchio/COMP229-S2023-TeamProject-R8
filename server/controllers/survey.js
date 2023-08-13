@@ -39,6 +39,8 @@ module.exports.displaySurveysPage = async (req, res, next) => {
             "created": date.toLocaleDateString('en-US', options),
             "title": req.body.title,
             "description": req.body.description,
+            "min": req.body.min,
+            "max": req.body.max,
             "author": req.user.displayName,
             questions: req.body.questions,
         });
@@ -84,7 +86,7 @@ module.exports.displaySurveysPage = async (req, res, next) => {
                 
                 // Update the survey
                 survey.title = req.body.title;
-                //survey.description = req.body.description;
+                survey.description = req.body.description;
                 survey.questions = req.body.questions;
                 console.log(survey);
             
