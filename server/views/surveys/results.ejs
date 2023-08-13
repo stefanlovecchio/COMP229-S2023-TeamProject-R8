@@ -2,10 +2,33 @@
 
 <%- include('../partials/main_nav.ejs') %>
 
-<form method="get" action="/results/<%= survey._id %>">
+<body>
+
+   <h1><%= title %> - Results</h1>
+   <% for (let i = 0; i < survey.questions.length; i++) { %>
+     <h3>Question <%= i + 1 %>: <%= survey.questions[i].question %></h3>
+     <% survey.questions[i].answers.forEach((answer, index) => { %>
+       <% if (survey.questions[i].questionType === 'radio' || survey.questions[i].questionType === 'checkbox') { %>
+         <p>
+           <%= answer %>
+           <% if (survey.questions[i].userAnswers && survey.questions[i].userAnswers.includes(index.toString())) { %>
+             - Your answer was: <%= answer %>
+           <% } %>
+         </p>
+       <% } else if (survey.questions[i].questionType === 'text' || survey.questions[i].questionType === 'range') { %>
+         <p>
+           <% if (survey.questions[i].userAnswers) { %>
+             Your answer was: <%= survey.questions[i].userAnswers %>
+           <% } %>
+         </p>
+       <% } %>
+     <% }); %>
+   <% } %>
+
+</body>
 
 
+<%- include('../partials/bottom_nav.ejs') %>
+<%- include('../partials/footer.ejs') %>
 
 
-   <%- include('../partials/bottom_nav.ejs') %>
-    <%- include('../partials/footer.ejs') %>

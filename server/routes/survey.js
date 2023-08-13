@@ -38,7 +38,7 @@ router.get('/delete/:id', requireAuth, surveyController.performDelete);
 
 router.get('/takeSurvey/:id', surveyController.displayTakeSurveyPage);
 
-router.post('/takeSurvey/:id', surveyController.processTakeSurveyPage);
+router.post('/:id/process', surveyController.processTakeSurveyPage);
 
 router.get('/results/:id', surveyController.displayResultsPage);
 

@@ -144,7 +144,7 @@ module.exports.displaySurveysPage = async (req, res, next) => {
                   questions: responses
                 })
                 resultsModel.create(newResult);
-            res.redirect('/results');
+                res.redirect(`/results/${id}`);
           } catch (err) {
             console.log(err);  // debug line
             return res.status(500).json({ error: err.message });
@@ -152,14 +152,25 @@ module.exports.displaySurveysPage = async (req, res, next) => {
     };
 
     module.exports.displayResultsPage = async (req, res, next) => {
-      let id = req.params.id;
+      /* let id = req.params.id;
       // You can also validate the id
        if (!mongoose.Types.ObjectId.isValid(id)) {
         console.log("Invalid id");
         // Here you can decide what to do when id is invalid. You might redirect to an error page or send a specific error message.
     }
-  }
+  } */
+      const surveyId = req.params.id;
 
+      // Fetch survey data by ID
+       Survey.findById(surveyId)
+      .then(survey => {
+          res.render('surveys/results', { title: survey.title, survey });
+      })
+      .catch(err => {
+          console.error(err);
+          res.status(500).send('Internal Server Error');
+      });
+    };
     function isRequestBodyValid(body) {
         // Check that body contains a 'questions' property
         if (!body.questions) {

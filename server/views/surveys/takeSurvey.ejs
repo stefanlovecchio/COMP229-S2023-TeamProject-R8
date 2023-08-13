@@ -5,7 +5,7 @@
 
 <body>
   <h1><%= title %></h1>
-<form method="post" action="/takeSurvey/<%= survey._id %>">
+  <form method="post" action="/<%= survey._id %>/process">
 <!-- print out questions and answers for each question-->
 <% for(let i = 0; i < survey.questions.length; i++) { %>
 
@@ -37,8 +37,20 @@
 
 
 <% } %>
-<button type="submit">Submit</button>
+<button type="submit">Submit test</button>
 </form>
+ <!-- Add a script to handle the button click and redirect to results -->
+ <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const submitBtn = document.getElementById("submitBtn");
+      
+      submitBtn.addEventListener("click", () => {
+        const surveyId = "<%= survey._id %>";
+        window.location.href = `/results/${surveyId}`;
+      });
+    });
+  </script>
+
 </body>
 
 
