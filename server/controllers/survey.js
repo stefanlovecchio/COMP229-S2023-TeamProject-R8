@@ -55,13 +55,11 @@ module.exports.displaySurveysPage = async (req, res, next) => {
     
     module.exports.displayEditPage = async (req, res, next) => {
         let id = req.params.id;
-        
         // You can also validate the id
         if (!mongoose.Types.ObjectId.isValid(id)) {
             console.log("Invalid id");
             // Here you can decide what to do when id is invalid. You might redirect to an error page or send a specific error message.
         }
-
         try {
             let surveyToEdit = await Survey.findById(id);
             res.render('surveys/edit', 
@@ -80,14 +78,13 @@ module.exports.displaySurveysPage = async (req, res, next) => {
               try {
                 // Use the ID in the body of the request to find the survey
                 const survey = await Survey.findById(id);
-                
                 if (!survey) {
                   return res.status(404).json({ message: 'Survey not found' });
                 }
                 
                 // Update the survey
                 survey.title = req.body.title;
-                survey.description = req.body.description;
+                //survey.description = req.body.description;
                 survey.questions = req.body.questions;
                 console.log(survey);
             
@@ -140,6 +137,8 @@ module.exports.displaySurveysPage = async (req, res, next) => {
       const responses = req.body.questions;
               try {
                 let newResult = new resultsModel({
+                  displayName: req.user ? req.user.displayName : '',
+                  surveyId: id,
                   title: req.body.title,
                   questions: responses
                 })
