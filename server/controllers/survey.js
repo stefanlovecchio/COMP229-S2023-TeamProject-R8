@@ -6,7 +6,7 @@ let passport = require('passport');
 // create a reference to the model
 let Survey = require('../models/survey');
 //create a reference to the results model
-let resultsModel = require('../models/results');
+let ResultsModel = require('../models/results');
 
 module.exports.displayDetailsPage = (req, res, next) => {
     res.render('surveys/details', { title: 'Survey Creator',
@@ -137,6 +137,10 @@ module.exports.displaySurveysPage = async (req, res, next) => {
       let id = req.params.id;
       console.log('process take survey page: ' + JSON.stringify(req.body));
       const responses = req.body.questions;
+      
+      // Logging the responses before modifying them
+  console.log('Original Responses:', responses);
+      
       //if only one answer, make it an array to conform to the schema
       responses.forEach(question => {
         if (question.answer) {
@@ -144,41 +148,62 @@ module.exports.displaySurveysPage = async (req, res, next) => {
           delete question.answer;
         }
       });
+
+      // Logging the modified responses
+  console.log('Modified Responses:', responses);
+
               try {
-                let newResult = new resultsModel({
+                const newResult = new ResultsModel({
                   displayName: req.user ? req.user.displayName : '',
                   surveyId: id,
                   title: req.body.title,
                   questions: responses
-                })
-                resultsModel.create(newResult);
+                });
+
+                await newResult.save();
+
+        
+    // Logging the saved result
+    console.log('Saved Result:', newResult);
+
                 res.redirect(`/results/${id}`);
-          } catch (err) {
-            console.log(err);  // debug line
-            return res.status(500).json({ error: err.message });
-          }
-    };
+              } catch (err) {
+                console.log(err);  // debug line
+                return res.status(500).json({ error: err.message });
+              }
+            };
 
     module.exports.displayResultsPage = async (req, res, next) => {
-      /* let id = req.params.id;
-      // You can also validate the id
-       if (!mongoose.Types.ObjectId.isValid(id)) {
-        console.log("Invalid id");
-        // Here you can decide what to do when id is invalid. You might redirect to an error page or send a specific error message.
-    }
-  } */
-      const surveyId = req.params.id;
+  const surveyId = req.params.id;
 
-      // Fetch survey data by ID
-       Survey.findById(surveyId)
-      .then(survey => {
-          res.render('surveys/results', { title: survey.title, survey });
-      })
-      .catch(err => {
-          console.error(err);
-          res.status(500).send('Internal Server Error');
-      });
-    };
+  try {
+    const survey = await Survey.findById(surveyId);
+
+    if (!survey) {
+      return res.status(404).send('Survey not found');
+    }
+
+    const results = await ResultsModel.findOne({ surveyId: survey });
+
+    if (!results) {
+      return res.status(404).send('Survey results not found');
+    }
+
+    for (let i = 0; i < results.questions.length; i++) {
+      const questionText = survey.questions[i].question;
+      const userAnswers = results.questions[i].answers;
+
+      console.log(`Question ${i + 1}: ${questionText}`);
+      console.log(`User's answers: ${userAnswers}`);
+    }
+
+    res.render('surveys/results', { title: survey.title, survey: survey, results: results });
+  } catch (err) {
+    console.error('Error fetching results:', err);
+    res.status(500).send('Internal Server Error');
+  }
+};
+
     function isRequestBodyValid(body) {
         // Check that body contains a 'questions' property
         if (!body.questions) {

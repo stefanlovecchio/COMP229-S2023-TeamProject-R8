@@ -3,32 +3,17 @@
 <%- include('../partials/main_nav.ejs') %>
 
 <body>
-
-   <h1><%= title %> - Results</h1>
-   <% for (let i = 0; i < survey.questions.length; i++) { %>
-     <h3>Question <%= i + 1 %>: <%= survey.questions[i].question %></h3>
-     <% survey.questions[i].answers.forEach((answer, index) => { %>
-       <% if (survey.questions[i].questionType === 'radio' || survey.questions[i].questionType === 'checkbox') { %>
-         <p>
-           <%= answer %>
-           <% if (survey.questions[i].userAnswers && survey.questions[i].userAnswers.includes(index.toString())) { %>
-             <strong>Your answer was:</strong> <%= answer %>
-           <% } %>
-         </p>
-       <% } else if (survey.questions[i].questionType === 'text' || survey.questions[i].questionType === 'range') { %>
-         <p>
-           <% if (survey.questions[i].userAnswers) { %>
-             <strong>Your answer was: </strong><%= survey.questions[i].userAnswers %>
-           <% } %>
-         </p>
-       <% } %>
-     <% }); %>
-   <% } %>
-
+  <h1><%= title %> - Results</h1>
+  <% for (let i = 0; i < results.questions.length; i++) { %>
+    <h3>Question <%= i + 1 %>: <%= survey.questions[i].question %></h3>
+    <p>
+      <% survey.questions[i].answers.forEach(answer => { %>
+         <li><%= answer %></li>
+       <% }); %>
+      <strong>User's answer:</strong> <%= results.questions[i].answers[0] %>
+    </p>
+  <% } %>
 </body>
-
 
 <%- include('../partials/bottom_nav.ejs') %>
 <%- include('../partials/footer.ejs') %>
-
-
