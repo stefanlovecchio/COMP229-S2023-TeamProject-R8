@@ -8,10 +8,13 @@ let questionSchema = new mongoose.Schema({
 //create a model class for results list
 let ResultModel = mongoose.Schema({
   title: String,
-  id: {
+  surveyId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'User', // not sure if this is necessary
-
+    ref: 'Survey', 
+  },
+  userId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User', 
 },
   questions: [questionSchema]
 });
