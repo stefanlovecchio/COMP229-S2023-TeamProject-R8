@@ -14,8 +14,8 @@
 
 <div class="row">
         <div class="offset-md-4 col-md-4">
-            <h1>Please Register</h1>
-            <form method="POST" autocomplete="off">
+            <form method="POST" autocomplete="off" id="registerForm">
+                <h1>sign up & start creating</h1>
                 <fieldset class="form-group">
                     <label for="username">Username: </label>
                     <input type="text" class="form-control"
@@ -42,12 +42,12 @@
                     <input type="text" class="form-control"
                     name="displayName" placeholder="Enter Display Name"
                     id="displayName" required>
-                </fieldset>
+                </fieldset><br>
 
                 <fieldset class="form-group text right">
-                    <input type="submit" class="btn btn-success" value="Register">
+                    <input type="submit" class="btn btn-primary" value="Register">
                     <a href="/">
-                        <input type="button" class="btn btn-warning" value="Cancel">
+                        <input type="button" class="btn btn-danger" value="Cancel">
                     </a>
                 </fieldset>
             </form>

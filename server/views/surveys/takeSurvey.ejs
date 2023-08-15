@@ -2,12 +2,14 @@
 <%- include('../partials/main_nav.ejs') %>
 
 <body>
-  <h1><%= title %></h1>
+<div class="takeSurveyBody">
+  <br><h4><%= title %></h4><br>
   <!-- take survey form-->
   <form method="post" action="/<%= survey._id %>/results">
 <!-- print out questions and answers for each question-->
 <% for(let i = 0; i < survey.questions.length; i++) { %>
     <label for="questions<%= i %>">Question <%= i + 1 %>: <%= survey.questions[i].question %></label><br />
+    <p class="answerChoices">
 <!-- create inputs based on the type of question-->  
 <!-- single choice -->
     <% if(survey.questions[i].questionType === "radio") { %>
@@ -29,12 +31,13 @@
         <input type="range" name="questions[<%= i %>][answer]" min="<%= survey.questions[i].min %>" 
         max="<%= survey.questions[i].max %>" value="<%= answer %>"> <br>
         <% })}  %>
+      </p>
     <% }  %>
+ 
     <br>
-
-
-<button type="submit" id="submitBtn">Submit</button>
+<button type="submit" class="btn btn-primary" id="submitSurveyBtn">SUBMIT</button>
 </form>
+</div>
 
  <!-- Add a script to handle the button click and redirect to results -->
  <script>

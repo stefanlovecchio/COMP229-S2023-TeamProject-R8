@@ -15,28 +15,27 @@
 
 <div class="row">
     <div class="offset-md-4 col-md-4">
-        <h1>Please login</h1>
-        <form action="" method="POST"autocomplete="off">
+        <form action="" method="POST"autocomplete="off" id="loginForm">
+            <h1>Login</h1><br>
             <fieldset class="form-group">
-                <lable for="username">Username: </lable>
                 <input type="text" class="form-control"
                 name="username" placeholder="Enter Username"
-                id="username" required autofocus>                
+                id="username" required autofocus>
+                <br>                
             </fieldset>
 
             <fieldset class="form-group">
-                <lable for="password">Password: </lable>
                 <input type="password" class="form-control"
                 name="password" placeholder="Enter Password"
-                id="password" required>
+                id="password" required><br>
                 or
                 <a href="/register">Register Here</a>
-                   </fieldset>
+                   </fieldset><br>
 
             <fieldset class="form-group text-right">
-                <input type="submit" class="btn btn-success" valuse="Login">
+                <input type="submit" class="btn btn-primary" value="Login">
                 <a href="/">
-                    <input type="button" class="btn btn-warning" value="Cancel">
+                    <input type="button" class="btn btn-danger" value="Cancel">
                 </a>
             </fieldset>
 

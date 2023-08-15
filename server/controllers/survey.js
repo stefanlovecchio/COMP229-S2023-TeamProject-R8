@@ -83,6 +83,8 @@ module.exports.processEditPage = async (req, res, next) => {
     survey.title = req.body.title;
     survey.description = req.body.description;
     survey.questions = req.body.questions;
+    survey.min= req.body.min;
+    survey.max= req.body.max;
     const updatedSurvey = await survey.save();
     res.redirect("/surveys");
   } catch (err) {

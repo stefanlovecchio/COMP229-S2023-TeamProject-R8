@@ -11,14 +11,15 @@
   <div class="container">
     <div class="col-md-offset-3 col-md-6">
       <h1>Survey Editor</h1>
-      <h3><%= survey.title %></h3>
       <form method="POST" action="/edit/<%= survey._id %>">
         <label for="title">Title: </label>
-        <input type="text" name="title" value="<%= survey.title %>"><br /><br />
+        <input type="text" name="title" id="titleText" value="<%= survey.title %>"><br />
+        <label for="description">Description: </label>
+        <input type="text" id="descriptionText"name="description" value="<%= survey.description %>"><br /><br />
         <div id="questions-container">
           <!-- create text input elements for all questions in the survey-->
           <% for(let i = 0; i < survey.questions.length; i++) { %>
-            <label for="questions<%= i %>">Question <%= i + 1 %></label><br />
+            <label for="questions<%= i %>">Question <%= i + 1 %></label>
             <div class="question">
               <input type="text" name="questions[<%= i %>][question]" value="<%= survey.questions[i].question %>">
               <!-- create drop down menu for question type-->
@@ -28,9 +29,16 @@
         <option value="checkbox" <%= survey.questions[i].questionType == "checkbox" ? "selected" : "" %>>Multiple Choice</option>
         <option value="text" <%= survey.questions[i].questionType == "text" ? "selected" : "" %>>Text</option>
         <option value="range" <%= survey.questions[i].questionType == "range" ? "selected" : "" %>>Slider</option>
-        <option value="image" <%= survey.questions[i].questionType == "image" ? "selected" : "" %>>Image</option>
           </select>
-              <button type="button" id="remove-question-btn">Remove Question</button>
+          <button type="button" id="remove-question-btn">Remove Question</button>
+          <% if (survey.questions[i].questionType == "range") { %>
+          <br><label for="min">Min Value: </label>
+          <input type="text" class="range-min" name="questions[<%= i %>][min]" value="<%= survey.questions[i].min %>">
+          <label for="max">Max Value: </label>
+          <input type="text" class="range-max" name="questions[<%= i %>][max]" value="<%= survey.questions[i].max %>"><br />
+          
+          <% } else {%>
+              
               <div id="answers-container">
                 <!-- create input elements for answers for each question-->
                 <% for(let j = 0; j < survey.questions[i].answers.length; j++) { %>
@@ -40,21 +48,21 @@
                     <button type="button" class="remove-answer-btn">Remove Answer</button>
                   </div>
                 <% } %>
-                <button type="button" class="add-answer-btn" id="add-answer-btn">Add Answer</button><br /><br />
+                <button type="button" class="add-answer-btn" id="add-answer-btn">Add Answer</button>
               </div>
-            </div><br />
+            </div>
           <% } %>
-          <button class="add-question-btn" id="add-question-btn">Add Question</button><br /><br />
         </div>
-        <div style="margin-bottom: 3rem; display: grid; justify-content: space-around;">
+        <% } %>
+      </div>
           <!-- submit and cancel buttons -->
+          <button class="add-question-btn" id="add-question-btn">Add Question</button><br /><br />
           <button class="btn btn-primary" type="submit">
             <i class="fa fa-check-square-o"></i> Submit
           </button>
           <a href="/surveys" class="btn btn-warning">
             <i class="fa fa-undo"></i> Cancel
           </a>
-        </div>
       </form>
     </div>
   </div>
@@ -72,14 +80,16 @@ const row = document.getElementById('row');
 //add question click event
 addQuestionBtn.addEventListener('click', () => {
   //find current question number
+  console.log(event.target.parentNode);
   let questionCount = document.querySelectorAll('.question').length;
   //create a question container
   const questionDiv = document.createElement('div');
   questionDiv.classList.add('question');
   //create label for current question
   const questionLabel = document.createElement('label');
+  questionLabel.setAttribute('for', 'question' + questionCount);
   questionLabel.classList.add('question-label');
-  questionLabel.textContent = `Question ${questionCount}`;
+  questionLabel.innerText = `Question ${questionCount+1}`;
   //create text input for question
   const questionText = document.createElement('input');
   questionText.type = 'text';
@@ -89,7 +99,8 @@ addQuestionBtn.addEventListener('click', () => {
   questionText.required = true;
   //add question type selector & options
   const qTypeLabel = document.createElement('label');
-      qTypeLabel.innerHTML = 'Question Type:';
+  qTypeLabel.classList.add('qTypeLabel');
+  qTypeLabel.innerText = 'Question Type:';
       const qTypeSelect = document.createElement('select');
       qTypeSelect.name = `questions[${questionCount}][questionType]`;
       let newOption1 = new Option('Single Choice', 'radio');
@@ -111,7 +122,10 @@ addQuestionBtn.addEventListener('click', () => {
   //add answer button click event
   addAnswerBtn.addEventListener('click', () => {
     //get answer count within current question
-  let answerIndex = event.target.parentNode.querySelectorAll('.answer').length; 
+    let answerIndex = event.target.parentNode.querySelectorAll('.answer').length; 
+    answerLabel = document.createElement('label');
+    answerLabel.classList.add('answer-label');
+    answerLabel.textContent = `Answer ${answerIndex+1}`;
   //create answer container 
   const answerDiv = document.createElement('div');
   answerDiv.classList.add('answer');
@@ -132,8 +146,27 @@ addQuestionBtn.addEventListener('click', () => {
     // Update the count of answers for this question
     questionCount--;
   });
+  let answerType = event.target.parentNode.querySelector('select').value;
+        switch (answerType) {
+          case 'range': 
+          const rangeMin = document.createElement('input');
+          rangeMin.classList.add('range-min');
+          rangeMin.type = 'number';
+          rangeMin.name = `questions[${getQuestionIndex()}][min]`;
+          rangeMin.placeholder = 'Range Mininum Value';
+          answerDiv.appendChild(rangeMin);
+          break;
+          const rangeMax = document.createElement('input');
+          rangeMax.classList.add('range-max');
+          rangeMax.type = 'number';
+          rangeMax.name = `questions[${getQuestionIndex()}][max]`;
+          rangeMax.placeholder = 'Range Maximum Value';
+          answerDiv.appendChild(rangeMax);
+          break;
+        }
   //attach question label, answer text, remove answer button to answer container
-answerDiv.appendChild(questionLabel);
+  answerDiv.appendChild(answerLabel);
+  answerDiv.appendChild(document.createElement('br'));
   answerDiv.appendChild(answerText);
   answerDiv.appendChild(removeAnswerBtn);
   answersContainer.appendChild(answerDiv);
@@ -148,12 +181,16 @@ answerDiv.appendChild(questionLabel);
     questionDiv.remove();
   });
   //attach question, label, type selector, answer container, add answer button to question container
+  questionDiv.appendChild(questionLabel);
+  questionDiv.appendChild(document.createElement('br'));
   questionDiv.appendChild(questionText);
   questionDiv.appendChild(qTypeLabel);
-      questionDiv.appendChild(qTypeSelect);
-  questionDiv.appendChild(answersContainer);
-  questionDiv.appendChild(addAnswerBtn);
+  questionDiv.appendChild(qTypeSelect);
   questionDiv.appendChild(removeQuestionBtn);
+  questionDiv.appendChild(answersContainer);
+  questionDiv.appendChild(document.createElement('br'));
+  questionDiv.appendChild(addAnswerBtn);
+  
   // check if there are existing questions
   let allQuestions = Array.from(document.querySelectorAll('.question'));
           if (allQuestions.length > 0) {
@@ -180,6 +217,22 @@ for (let i = 0; i < existingAnsBtn.length; i++) {
     answerText.classList.add('answer-text');
     answerText.name = `questions[${getQuestionIndex()}][answers][${answerIndex}]`;
     answerText.placeholder = 'Answer Text';
+    let answerType = event.target.parentNode.querySelector('select').value;
+        switch (answerType) {
+          case 'range': 
+          const rangeMin = document.createElement('input');
+          rangeMin.type = 'number';
+          rangeMin.name = `questions[${getQuestionIndex()}][min]`;
+          rangeMin.placeholder = 'Range Mininum Value';
+          answerDiv.appendChild(rangeMin);
+          break;
+          const rangeMax = document.createElement('input');
+          rangeMax.type = 'number';
+          rangeMax.name = `questions[${getQuestionIndex()}][max]`;
+          rangeMax.placeholder = 'Range Maximum Value';
+          answerDiv.appendChild(rangeMax);
+          break;
+        }
     //create remove answer button
     const removeAnswerBtn = document.createElement('button');
     removeAnswerBtn.type = 'button';
@@ -188,6 +241,7 @@ for (let i = 0; i < existingAnsBtn.length; i++) {
     removeAnswerBtn.addEventListener('click', () => {
       answerDiv.remove();
     });
+    
     //attach answer elements to the parent container of the clicked add-answer-button
     answerDiv.appendChild(answerText);
     answerDiv.appendChild(removeAnswerBtn);

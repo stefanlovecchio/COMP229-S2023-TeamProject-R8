@@ -3,7 +3,7 @@
 
 <%- include('../partials/main_nav.ejs') %>
 
-<div class="container">
+<div class="creator-container">
       
   <div class="col-md-offset-3 col-md-6">
     <h1>
@@ -11,7 +11,7 @@
     </h1>
     <form class="form" method="POST">
       <div class="form-group">
-        <h3>Questions:</h3>
+        <label for="nameTextField">Title</label>
         <input type="text" class="form-control" id="nameTextField" placeholder="Enter the Survey Title"
           name="title" required>
       </div>
@@ -22,6 +22,7 @@
       </div>
       <div id="questions-container">
         <div class="question">
+          <label for="questionTextField" class="question-label">Question 1</label>
         <input type="text" class="form-control" id="nameTextField" placeholder="Question text"
           name="questions[0][question]" required>
           <label for="questionType">Question type: </label>
@@ -36,7 +37,6 @@
           </div>
           <button type="button" class="add-answer-btn" id="add-answer-btn">Add Answer
           </button><br />
-          <br />
           <div class="answer">
           </div>
         </div>
@@ -62,6 +62,11 @@
       questionCount++;
       const questionDiv = document.createElement('div');
       questionDiv.classList.add('question');
+      //create label for current question
+      const questionLabel = document.createElement('label');
+      questionLabel.setAttribute('for', 'question' + questionCount);
+      questionLabel.classList.add('question-label');
+      questionLabel.innerText = `Question ${questionCount+1}`;
       const questionText = document.createElement('input');
       questionText.type = 'text';
       questionText.classList.add('form-control');
@@ -70,6 +75,7 @@
       questionText.required = true;
       //add question type selector & options
       const qTypeLabel = document.createElement('label');
+      qTypeLabel.classList.add('qTypeLabel');
       qTypeLabel.innerHTML = 'Question Type:';
       const qTypeSelect = document.createElement('select');
       qTypeSelect.name = `questions[${questionCount}][questionType]`;
@@ -81,8 +87,6 @@
       qTypeSelect.add(newOption3);
       let newOption4 = new Option('Slider', 'range');
       qTypeSelect.add(newOption4);
-      let newOption5 = new Option('Image', 'image');
-      qTypeSelect.add(newOption5);
       //create add answer button
       const answersContainer = document.createElement('div');
       answersContainer.classList.add('answers-container');
@@ -100,6 +104,8 @@
         questionCount--;
       });
       //attach new question
+      questionDiv.appendChild(questionLabel);
+      questionDiv.appendChild(document.createElement('br'));
       questionDiv.appendChild(questionText);
       questionDiv.appendChild(qTypeLabel);
       questionDiv.appendChild(qTypeSelect);
@@ -122,12 +128,30 @@
         //create an answer using this counter
         const answerDiv = document.createElement('div');
         answerDiv.classList.add('answer');
+        answerLabel = document.createElement('label');
+        answerLabel.classList.add('answer-label');
+        answerLabel.textContent = `Answer ${answerCount+1}`;
         const answerText = document.createElement('input');
         answerText.type = 'text';
         answerText.classList.add('answer-text');
         answerText.name = `questions[${getQuestionIndex()}][answers][${answerCount}]`;
         answerText.placeholder = 'Answer Text';
         answerText.required = true;
+        let answerType = event.target.parentNode.querySelector('select').value;
+        switch (answerType) {
+          case 'range': 
+          const rangeMin = document.createElement('input');
+          rangeMin.type = 'number';
+          rangeMin.name = `questions[${getQuestionIndex()}][min]`;
+          rangeMin.placeholder = 'Range Mininum Value';
+          answerDiv.appendChild(rangeMin);
+          break;
+          const rangeMax = document.createElement('input');
+          rangeMax.type = 'number';
+          rangeMax.name = `questions[${getQuestionIndex()}][max]`;
+          rangeMax.placeholder = 'Range Maximum Value';
+          answerDiv.appendChild(rangeMax);
+        }
         //create a remove answer button
         const removeAnswerBtn = document.createElement('button');
         removeAnswerBtn.type = 'button';
@@ -138,6 +162,8 @@
           answerDiv.remove();
         });
         //attach new answer elements
+        answerDiv.appendChild(answerLabel);
+        answerDiv.appendChild(document.createElement('br'));
         answerDiv.appendChild(answerText);
         answerDiv.appendChild(removeAnswerBtn);
         answersContainer.appendChild(answerDiv);
@@ -151,11 +177,30 @@
         let answerCount = event.target.parentNode.querySelectorAll('.answer-text').length;
         const answerDiv = document.createElement('div');
         answerDiv.classList.add('answer');
+        answerLabel = document.createElement('label');
+        answerLabel.classList.add('answer-label');
+        answerLabel.textContent = `Answer ${answerCount+1}`;
         const answerText = document.createElement('input');
         answerText.type = 'text';
         answerText.classList.add('answer-text');
         answerText.name = `questions[${getQuestionIndex()}][answers][${answerCount}]`;
         answerText.placeholder = 'Answer Text';
+        let answerType = event.target.parentNode.querySelector('select').value;
+        switch (answerType) {
+          case 'range': 
+          const rangeMin = document.createElement('input');
+          rangeMin.type = 'number';
+          rangeMin.name = `questions[${getQuestionIndex()}][min]`;
+          rangeMin.placeholder = 'Range Mininum Value';
+          answerDiv.appendChild(rangeMin);
+          break;
+
+          const rangeMax = document.createElement('input');
+          rangeMax.type = 'number';
+          rangeMax.name = `questions[${getQuestionIndex()}][max]`;
+          rangeMax.placeholder = 'Range Maximum Value';
+          answerDiv.appendChild(rangeMax);
+        }
         //create remove answer button
         const removeAnswerBtn = document.createElement('button');
         removeAnswerBtn.type = 'button';
@@ -167,6 +212,8 @@
           questionCount--;
         });
         //attach answer elements to DOM
+        answerDiv.appendChild(answerLabel);
+        answerDiv.appendChild(document.createElement('br'));
         answerDiv.appendChild(answerText);
         answerDiv.appendChild(removeAnswerBtn);
         document.querySelector('.answers-container').appendChild(answerDiv);
