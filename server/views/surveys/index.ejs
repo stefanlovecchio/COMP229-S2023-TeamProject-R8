@@ -3,7 +3,6 @@
 <%- include('../partials/main_nav.ejs') %>
 
 <body>
- 
   <!-- survey list table-->
   <table class="table" id="surveyList">
     <thead>
@@ -14,6 +13,7 @@
         <th scope="col">CREATED</th>
         <th scope="col">QUESTIONS</th>
         <th id="customize">CUSTOMIZE</th>
+        <th></th>
       </tr>
     </thead>
     <tbody>
@@ -25,10 +25,10 @@
       <% } else { %>
         <% surveys.forEach(function(survey) { %>
           <tr>
-            <td>
+            <th scope="row" class="shine">
               <!-- hyperlink survey title to take take survey page -->
               <a href="/takeSurvey/<%= survey._id %>"><%= survey.title %></a>
-            </td>
+            </th>
             <!-- table column info-->
             <td><%= survey.author %></td>
             <td><%= survey.description %></td>
