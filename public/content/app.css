@@ -216,10 +216,7 @@ p.answerChoices {
 #description-label {
   margin-left: 1rem;
 }
-#description-label {
-  top: -2.5rem;
-  position: relative;
-}
+
 .question {
   padding: 1rem;
 }
