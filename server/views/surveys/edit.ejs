@@ -13,13 +13,15 @@
         <label id="title-label" for="title">Title: </label>
         <input type="text" name="title" id="titleText" value="<%= survey.title %>"><br />
         <label id="description-label" for="description">Description: </label>
-        <textarea id="descriptionText"name="description" value="<%= survey.description %>"></textarea><br /><br />
+        <textarea id="descriptionText"name="description" value="<%= survey.description %>"
+          placeholder="<%= survey.description %>"></textarea><br /><br />
         <div id="questions-container">
           <!-- create text input elements for all questions in the survey-->
           <% for(let i = 0; i < survey.questions.length; i++) { %>
             <label class="question-label" for="questions<%= i %>">Question <%= i + 1 %></label>
             <div class="question">
-              <textarea class="question-text" name="questions[<%= i %>][question]" value="<%= survey.questions[i].question %>"></textarea>
+              <textarea class="question-text" name="questions[<%= i %>][question]" value="<%= survey.questions[i].question %>"
+                placeholder="<%= survey.questions[i].question %>"></textarea>
               <!-- create drop down menu for question type-->
               <label class="qTypeLabel" for="questionType">Question type: </label>
           <select id="questionType" name="questions[<%= i %>][questionType]">
