@@ -213,12 +213,16 @@ for (let i = 0; i < existingAnsBtn.length; i++) {
     //create answer container & answer input
     const answerDiv = document.createElement('div');
     answerDiv.classList.add('answer');
+    answerLabel = document.createElement('label');
+    answerLabel.classList.add('answer-label');
+    answerLabel.textContent = `Answer ${answerIndex+1}`;
     const answerText = document.createElement('input');
     answerText.type = 'text';
     answerText.classList.add('answer-text');
     answerText.name = `questions[${getQuestionIndex()}][answers][${answerIndex}]`;
     answerText.placeholder = 'Answer Text';
-    let answerType = event.target.parentNode.querySelector('select').value;
+    
+    let answerType = event.target.parentNode.parentNode.querySelector('select').value;
         switch (answerType) {
           case 'range': 
           const rangeMin = document.createElement('input');
@@ -244,6 +248,8 @@ for (let i = 0; i < existingAnsBtn.length; i++) {
     });
     
     //attach answer elements to the parent container of the clicked add-answer-button
+    answerDiv.appendChild(answerLabel);
+    answerDiv.appendChild(document.createElement('br'));
     answerDiv.appendChild(answerText);
     answerDiv.appendChild(removeAnswerBtn);
     let par = existingAnsBtn[i].parentNode;
