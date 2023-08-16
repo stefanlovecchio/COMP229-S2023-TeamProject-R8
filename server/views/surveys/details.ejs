@@ -6,7 +6,7 @@
 <div class="creator-container">
       
   <div class="col-md-offset-3 col-md-6">
-    <h1>
+    <h1 id="surveyCreatorTitle">
       <%= title %>
     </h1>
     <form class="form" method="POST">
@@ -33,6 +33,7 @@
             <option value="range">Slider</option>
             <option value="image">Image</option>
           </select>
+          
           <div class="answers-container">
           </div>
           <button type="button" class="add-answer-btn" id="add-answer-btn">Add Answer
@@ -40,10 +41,14 @@
           <div class="answer">
           </div>
         </div>
-        <br /><button type="button" id="add-question-btn">Add Question</button>
+        <br /><button type="button" class="add-question-btn" id="add-question-btn">Add Question</button>
         <div id="createCancel">
-          <button type="submit">Create Survey</button><br>
-          <button type="cancel">Cancel</button>
+          <a class="btn btn-primary">
+            <i class="fa-solid fa-plus btn-lg"> Create</i></a>
+                </td>
+          <a href="/surveys" class="btn btn-secondary btn-lg">
+            <i class="fa fa-undo"></i> Cancel
+          </a>
         </div>
       </div>
   </div>

@@ -2,8 +2,40 @@
     max-width: 55%;
     margin: auto;
     color: #4f4f4f;
+    background-color: #e0edf3;
+    --bs-table-color: #4f4f4f;
+    min-height: 50rem;
 }
-
+.shine {
+  top: 50%;
+  left: 50%;
+  padding: 12px 48px;
+  color: #ffffff;
+  background: linear-gradient(to right, #2c01ca 0, rgb(252, 170, 211) 10%, #0110d8 20%);
+  background-position: 0;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shine 2s infinite linear;
+  animation-fill-mode: forwards;
+  -webkit-text-size-adjust: none;
+  
+  font-size: 1.5rem;
+  text-decoration: none;
+  white-space: nowrap;
+  font-family: 'Bungee', cursive;
+    font-family: 'Rubik Mono One', sans-serif;
+}
+@keyframes shine {
+  0% {
+    background-position: 0;
+  }
+  100% {
+    background-position: 450px;
+  }
+}
+.shine:hover {
+    font-weight: bolder;
+}
 .btn-primary {
     min-width: 109px;
 }
@@ -18,9 +50,8 @@
 }
 #surveyListHeader {
     font-size: x-large; 
-}
-th#customize{
-    margin-left:5px;
+    font-family: 'Bungee', cursive;
+    font-family: 'Rubik Mono One', sans-serif;
 }
 
 .qstnLength{
@@ -41,17 +72,20 @@ nav.navbar.navbar-expand-lg{
     padding-top: 10rem;
     font-size: xx-large;
     font-weight: bolder;
-    color: rgb(48, 48, 48);
+    color: rgb(100 189 186);
+    font-family: 'Bungee', cursive;
+    font-family: 'Rubik Mono One', sans-serif;
 }
 .add-survey {
     border-color: white;
 }
-.takeSurveyBody {
+.takeSurveyBody{
     width: 50%;
     margin: auto;
     margin-top: 5rem;
     padding-bottom: 5rem;
     background-color: #e0edf3;
+    font-size: larger;
 }
 p.answerChoices {
     margin-left: 40px;
@@ -90,8 +124,31 @@ p.answerChoices {
     margin-left: 3px;
     margin-right: 5px;
 }
-.remove-question-btn {
-    margin-left: 4px;
+.remove-question-btn, .add-question-btn {
+    margin-left: 10px;
+    border-radius: 5px;
+    background-color:  #ffffff;
+    font-weight: bold;
+    border: solid 2px;
+    color: #ffcfe0;
+    height: 35px;
+    width:150px
+}
+.remove-question-btn:hover, .add-question-btn:hover {
+    background-color: #ff6097;
+}
+.remove-answer-btn:hover, .add-answer-btn:hover {
+    background-color: #9d58f8;
+}
+.remove-answer-btn{
+    margin-left: 257px;
+    border-radius: 5px;
+    background-color: #ffffff;
+    border: solid 2px;
+    font-weight: bold;
+    color: #e4cfff;
+    width:150px;
+    height: 35px;
 }
 .creator-container {
     margin: auto;
@@ -100,4 +157,42 @@ p.answerChoices {
     padding-top: 50px;
     padding-bottom: 50px;
     background-color: #e0edf3;
+}
+#survey-editor {
+    padding-top: 50px;
+}
+.editorContainer {
+    max-width: 50%;
+    margin: auto;
+    background-color: #e0edf3;
+    padding-left: 10px;
+}
+.add-answer-btn {
+    border-radius: 5px;
+    background-color: #ffffff;
+    border: solid 2px;
+    border-color: #bac5ff;
+    font-weight: bold;
+    color: #b093d6;
+    width:150px;
+    margin-top:10px;
+    height: 35px;
+}
+.btn .btn-primary {
+    width: 150px;
+}
+.btn btn-warning {
+    min-width: 150px;
+}
+#createCancel {
+    display: flex;
+    margin-top: 5px;
+    justify-content: center;
+}
+h4, h1, nav.navbar.navbar-expand-lg {
+    font-family: 'Bungee', cursive;
+font-family: 'Rubik Mono One', sans-serif;
+}
+#surveyCreatorTitle {
+    color: #2c01ca;
 }
