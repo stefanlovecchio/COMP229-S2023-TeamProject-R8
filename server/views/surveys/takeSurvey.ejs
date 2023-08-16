@@ -6,6 +6,7 @@
   <br><h4><%= title %></h4><br>
   <!-- take survey form-->
   <form method="post" action="/<%= survey._id %>/results">
+    <hr />
 <!-- print out questions and answers for each question-->
 <% for(let i = 0; i < survey.questions.length; i++) { %>
     <label for="questions<%= i %>">Question <%= i + 1 %>: <%= survey.questions[i].question %></label><br />
@@ -32,6 +33,7 @@
         max="<%= survey.questions[i].max %>" value="<%= answer %>"> <br>
         <% })}  %>
       </p>
+      <hr />
     <% }  %>
  
     <br>

@@ -8,20 +8,20 @@
 </head>
 <body >
   <div class="editorContainer">
-    <div class="col-md-offset-3 col-md-6">
+    
       <form method="POST" id="survey-editor" action="/edit/<%= survey._id %>">
-        <label for="title">Title: </label>
+        <label id="title-label" for="title">Title: </label>
         <input type="text" name="title" id="titleText" value="<%= survey.title %>"><br />
-        <label for="description">Description: </label>
-        <input type="text" id="descriptionText"name="description" value="<%= survey.description %>"><br /><br />
+        <label id="description-label" for="description">Description: </label>
+        <textarea id="descriptionText"name="description" value="<%= survey.description %>"></textarea><br /><br />
         <div id="questions-container">
           <!-- create text input elements for all questions in the survey-->
           <% for(let i = 0; i < survey.questions.length; i++) { %>
             <label class="question-label" for="questions<%= i %>">Question <%= i + 1 %></label>
             <div class="question">
-              <input type="text" name="questions[<%= i %>][question]" value="<%= survey.questions[i].question %>">
+              <textarea class="question-text" name="questions[<%= i %>][question]" value="<%= survey.questions[i].question %>"></textarea>
               <!-- create drop down menu for question type-->
-              <label for="questionType">Question type: </label>
+              <label class="qTypeLabel" for="questionType">Question type: </label>
           <select id="questionType" name="questions[<%= i %>][questionType]">
             <option value="radio" <%= survey.questions[i].questionType == "radio" ? "selected" : "" %>>Single Choice</option>
         <option value="checkbox" <%= survey.questions[i].questionType == "checkbox" ? "selected" : "" %>>Multiple Choice</option>
@@ -42,7 +42,7 @@
                 <% for(let j = 0; j < survey.questions[i].answers.length; j++) { %>
                   <div class="answer">
                     <label for="answer<%= i %>_<%= j %>"> Answer <%= j + 1 %></label><br />
-                    <input type="text" name="questions[<%= i %>][answers][<%= j %>]" value="<%= survey.questions[i].answers[j] %>">
+                    <input class="answer-text" type="text" name="questions[<%= i %>][answers][<%= j %>]" value="<%= survey.questions[i].answers[j] %>">
                     <button type="button" class="remove-answer-btn">Remove Answer</button>
                   </div>
                 <% } %>
@@ -50,13 +50,14 @@
               </div>
             </div>
           <% } %>
-        </div>
+        
         <% } %>
       
           <!-- submit and cancel buttons -->
           <button class="add-question-btn" id="add-question-btn">Add Question</button><br /><br />
         </div>
-        <div id="createCancel">
+        </div>
+        <div id="updateCancel">
           <button class="btn btn-primary" type="submit">
             <i class="fa fa-check-square-o"></i> Submit
           </button>
@@ -65,7 +66,7 @@
           </a>
           </div>
       </form>
-    </div>
+    
   </div>
 </body>
 </html>
@@ -81,7 +82,6 @@ const row = document.getElementById('row');
 //add question click event
 addQuestionBtn.addEventListener('click', () => {
   //find current question number
-  console.log(event.target.parentNode);
   let questionCount = document.querySelectorAll('.question').length;
   //create a question container
   const questionDiv = document.createElement('div');
@@ -92,8 +92,7 @@ addQuestionBtn.addEventListener('click', () => {
   questionLabel.classList.add('question-label');
   questionLabel.innerText = `Question ${questionCount+1}`;
   //create text input for question
-  const questionText = document.createElement('input');
-  questionText.type = 'text';
+  const questionText = document.createElement('textarea');
   questionText.classList.add('question-text');
   questionText.name = `questions[${questionCount}][question]`;
   questionText.placeholder = 'Question Text';
@@ -132,6 +131,7 @@ addQuestionBtn.addEventListener('click', () => {
   answerDiv.classList.add('answer');
   //create text input for answer
   const answerText = document.createElement('input');
+  answerText.classList.add('answer-text');
   answerText.type = 'text';
   answerText.name = `questions[${questionCount}][answers][${answerIndex}]`;
   answerText.placeholder = 'Answer Text';
@@ -139,6 +139,7 @@ addQuestionBtn.addEventListener('click', () => {
   //crate remove answer button
   const removeAnswerBtn = document.createElement('button');
   removeAnswerBtn.type = 'button';
+  removeAnswerBtn.classList.add('remove-answer-btn');
   removeAnswerBtn.textContent = 'Remove Answer';
   //remove answer click event
   removeAnswerBtn.addEventListener('click', () => {

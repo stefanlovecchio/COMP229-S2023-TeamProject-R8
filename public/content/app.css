@@ -1,30 +1,116 @@
-.table {
+@media (min-width: 1281px) {
+  .table {
     max-width: 55%;
     margin: auto;
     color: #4f4f4f;
     background-color: #e0edf3;
     --bs-table-color: #4f4f4f;
     min-height: 50rem;
+    .shine {
+      top: 50%;
+      left: 50%;
+      padding: 12px 48px;
+      color: #ffffff;
+      background: linear-gradient(
+        to right,
+        #2c01ca 0,
+        rgb(252, 170, 211) 10%,
+        #0110d8 20%
+      );
+      background-position: 0;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: shine 2s infinite linear;
+      animation-fill-mode: forwards;
+      -webkit-text-size-adjust: none;
+
+      font-size: 1.5rem;
+      text-decoration: none;
+      white-space: nowrap;
+      font-family: "Bungee", cursive;
+      font-family: "Rubik Mono One", sans-serif;
+    }
+  }
+  #surveyList {
+    margin-top: 5rem;
+    font-size: larger;
+  }
+  #surveyListHeader {
+    font-size: x-large;
+    font-family: "Bungee", cursive;
+    font-family: "Rubik Mono One", sans-serif;
+  }
+  .aboveNav {
+    color: #88b6cd;
+    background-color: rgb(48, 48, 48);
+    min-height: 60px;
+  }
+  #survey-editor {
+    padding-top: 50px;
+  }
+  .editorContainer {
+    max-width: 50%;
+    align-content: center;
+    margin: auto;
+    background-color: #e0edf3;
+    padding-left: 10px;
+  }
+  #createCancel {
+
+    margin-top: 1rem;
+  }
+  .creator {
+    max-width: 50%;
+    margin-left: 10rem;
+  }
+  #loginForm,
+#registerForm {
+  margin-top: 5rem;
+  padding: 5rem;
+  border: solid;
+  border-color: #88b6cd4a;
+  width: 150%;
+  border-radius: 1rem;
 }
-.shine {
-  top: 50%;
-  left: 50%;
-  padding: 12px 48px;
-  color: #ffffff;
-  background: linear-gradient(to right, #2c01ca 0, rgb(252, 170, 211) 10%, #0110d8 20%);
-  background-position: 0;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  animation: shine 2s infinite linear;
-  animation-fill-mode: forwards;
-  -webkit-text-size-adjust: none;
-  
-  font-size: 1.5rem;
-  text-decoration: none;
-  white-space: nowrap;
-  font-family: 'Bungee', cursive;
-    font-family: 'Rubik Mono One', sans-serif;
+#updateCancel {
+    display: flex;
+    justify-content: center;
 }
+}
+
+@media screen and (max-width: 600px) {
+  tbody {
+    display: grid;
+  }
+  table thead {
+    display: none;
+  }
+  table td {
+    display: flex;
+  }
+  table td::before {
+    content: attr(label);
+    font-weight: bold;
+    width: 120px;
+    min-width: 120px;
+  }
+  #createCancel, #updateCancel {
+    position: relative;
+    margin-bottom: 3rem;
+  }
+  .add-survey {
+    position: relative;
+    margin-bottom: 2rem;
+  }
+  .creator-container {
+    display:contents;
+  }
+  #loginForm,
+#registerForm {
+  display:contents;
+}
+}
+
 @keyframes shine {
   0% {
     background-position: 0;
@@ -34,165 +120,153 @@
   }
 }
 .shine:hover {
-    font-weight: bolder;
+  font-weight: bolder;
 }
-.btn-primary {
-    min-width: 109px;
-}
-
+hr {
+    color: #b5b5b5;
+  }
+.btn-primary,
+.btn-secondary,
+.btn-danger,
 .btn-danger {
-    min-width: 109px;
+  min-width: 8.5em;
 }
-
-#surveyList {
-    margin-top: 5rem;
-    font-size: larger;
+.remove-question-btn,
+.add-question-btn {
+  margin-left: 1em;
+  border-radius: 0.5em;
+  background-color: #ffffff;
+  font-weight: bold;
+  border: solid 0.2em;
+  color: #ffcfe0;
+  height: 2.5em;
+  width: 10em;
 }
-#surveyListHeader {
-    font-size: x-large; 
-    font-family: 'Bungee', cursive;
-    font-family: 'Rubik Mono One', sans-serif;
+.remove-question-btn:hover,
+.add-question-btn:hover {
+  background-color: #ff6097;
 }
-
-.qstnLength{
-    text-align: center;
-}
-
-.aboveNav{
-    color: #88b6cd;
-    background-color: rgb(48, 48, 48);
-    min-height: 60px;
-}
-nav.navbar.navbar-expand-lg{
-    background-color: rgb(221 220 220);
-    font-size: x-large;
-}
-.home-container {
-    text-align: center;
-    padding-top: 10rem;
-    font-size: xx-large;
-    font-weight: bolder;
-    color: rgb(100 189 186);
-    font-family: 'Bungee', cursive;
-    font-family: 'Rubik Mono One', sans-serif;
-}
-.add-survey {
-    border-color: white;
-}
-.takeSurveyBody, #results{
-    width: 50%;
-    margin: auto;
-    margin-top: 5rem;
-    padding-bottom: 5rem;
-    background-color: #e0edf3;
-    font-size: larger;
-}
-p.answerChoices {
-    margin-left: 40px;
-}
-#submitSurveyBtn {
-    margin-left: 55px;
-    font-size: large;
-    font-weight: bold;
-}
-#loginForm, #registerForm {
-    margin-top: 5rem;
-    padding:5rem;
-    border: solid;
-    border-color: #88b6cd4a;
-    width: 150%;
-    border-radius: 25px;
-}
-.question {
-    padding: 10px;
-}
-.question-label {
-    margin-left: -5px;
-    margin-bottom: 5px;
-    font-weight: bold;
-}
-.range-min, .range-max {
-    max-width: 2rem;
-}
-#titleText {
-    margin-left: 164px;
-}
-#descriptionText{
-    margin-left: 114px;
-}
-.qTypeLabel {
-    margin-left: 3px;
-    margin-right: 5px;
-}
-.remove-question-btn, .add-question-btn {
-    margin-left: 10px;
-    border-radius: 5px;
-    background-color:  #ffffff;
-    font-weight: bold;
-    border: solid 2px;
-    color: #ffcfe0;
-    height: 35px;
-    width:150px
-}
-.remove-question-btn:hover, .add-question-btn:hover {
-    background-color: #ff6097;
-}
-.remove-answer-btn:hover, .add-answer-btn:hover {
-    background-color: #9d58f8;
-}
-.remove-answer-btn{
-    margin-left: 257px;
-    border-radius: 5px;
-    background-color: #ffffff;
-    border: solid 2px;
-    font-weight: bold;
-    color: #e4cfff;
-    width:150px;
-    height: 35px;
-}
-.creator-container {
-    margin: auto;
-    max-width: 50%;
-    padding-left: 245px;
-    padding-top: 50px;
-    padding-bottom: 50px;
-    background-color: #e0edf3;
-}
-#survey-editor {
-    padding-top: 50px;
-}
-.editorContainer {
-    max-width: 50%;
-    margin: auto;
-    background-color: #e0edf3;
-    padding-left: 10px;
+.remove-answer-btn:hover,
+.add-answer-btn:hover {
+  background-color: #9d58f8;
 }
 .add-answer-btn {
-    border-radius: 5px;
-    background-color: #ffffff;
-    border: solid 2px;
-    border-color: #bac5ff;
-    font-weight: bold;
-    color: #b093d6;
-    width:150px;
-    margin-top:10px;
-    height: 35px;
+  border-radius: 0.5em;
+  background-color: #ffffff;
+  border: solid 0.2em;
+  border-color: #bac5ff;
+  font-weight: bold;
+  color: #b093d6;
+  width: 10em;
+  margin-top: 1em;
+  height: 2.5em;
 }
-.btn .btn-primary {
-    width: 150px;
+.remove-answer-btn {
+  margin-left: 1em;
+  border-radius: 0.5em;
+  background-color: #ffffff;
+  border: solid 0.2em;
+  font-weight: bold;
+  color: #e4cfff;
+  width: 10em;
+  height: 2.5em;
+  margin-top: .5rem;
 }
-.btn btn-warning {
-    min-width: 150px;
+#submitSurveyBtn {
+  margin-left: 55px;
+  font-size: large;
+  font-weight: bold;
 }
-#createCancel {
-    display: flex;
-    margin-top: 5px;
-    justify-content: center;
+
+.qstnLength {
+  text-align: center;
 }
-h4, h3, h1, nav.navbar.navbar-expand-lg {
-    font-family: 'Bungee', cursive;
-font-family: 'Rubik Mono One', sans-serif;
+
+
+nav.navbar.navbar-expand-lg {
+  background-color: rgb(221 220 220);
+  font-size: x-large;
+}
+.home-container {
+  text-align: center;
+  padding-top: 10rem;
+  font-size: xx-large;
+  font-weight: bolder;
+  color: rgb(100 189 186);
+  font-family: "Bungee", cursive;
+  font-family: "Rubik Mono One", sans-serif;
+}
+.add-survey {
+  border-color: white;
+}
+.takeSurveyBody,
+#results {
+  width: 50%;
+  margin: auto;
+  margin-top: 5rem;
+  padding-bottom: 5rem;
+  background-color: #e0edf3;
+  font-size: larger;
+}
+p.answerChoices {
+  margin-left: 40px;
+}
+
+#title-label,
+#description-label {
+  margin-left: 1rem;
+}
+#description-label {
+  top: -2.5rem;
+  position: relative;
+}
+.question {
+  padding: 1rem;
+}
+.question-text {
+  min-width: 21.5rem;
+}
+.question-label {
+  margin-bottom: 0.5em;
+  font-family: "Bungee", cursive;
+  font-family: "Rubik Mono One", sans-serif;
+  color:#4e3170
+}
+.answer-text {
+  min-width: 21.5rem;
+}
+.range-min,
+.range-max {
+  max-width: 2rem;
+}
+#titleText {
+  margin-left: 3.1rem;
+  min-width: 16rem;
+}
+#descriptionText {
+  margin-top: 2rem;
+  min-width: 16rem;
+}
+.qTypeLabel {
+  margin-left: 1.1rem;
+  margin-right: 0.25rem;
+}
+.creator-container {
+  margin: auto;
+  max-width: 50%;
+  padding-left: 245px;
+  padding-top: 50px;
+  padding-bottom: 50px;
+  background-color: #e0edf3;
+}
+
+h4,
+h3,
+h1,
+nav.navbar.navbar-expand-lg {
+  font-family: "Bungee", cursive;
+  font-family: "Rubik Mono One", sans-serif;
 }
 #surveyCreatorTitle {
-    color: #2c01ca;
+  color: #2c01ca;
 }
