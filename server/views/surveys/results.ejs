@@ -4,6 +4,7 @@
 
 <body>
   <h1><%= title %> - Results</h1>
+  <div id="results">
   <% for (let i = 0; i < results.questions.length; i++) { %>
     <h3>Question <%= i + 1 %>: <%= survey.questions[i].question %></h3>
     <p>
@@ -13,6 +14,7 @@
       <strong>User's answer:</strong> <%= results.questions[i].answers[0] %>
     </p>
   <% } %>
+  </div>
 </body>
 
 <%- include('../partials/bottom_nav.ejs') %>

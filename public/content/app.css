@@ -79,7 +79,7 @@ nav.navbar.navbar-expand-lg{
 .add-survey {
     border-color: white;
 }
-.takeSurveyBody{
+.takeSurveyBody, #results{
     width: 50%;
     margin: auto;
     margin-top: 5rem;
@@ -189,7 +189,7 @@ p.answerChoices {
     margin-top: 5px;
     justify-content: center;
 }
-h4, h1, nav.navbar.navbar-expand-lg {
+h4, h3, h1, nav.navbar.navbar-expand-lg {
     font-family: 'Bungee', cursive;
 font-family: 'Rubik Mono One', sans-serif;
 }
