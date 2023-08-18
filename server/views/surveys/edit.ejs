@@ -17,8 +17,8 @@
         <div id="questions-container">
           <!-- create text input elements for all questions in the survey-->
           <% for(let i = 0; i < survey.questions.length; i++) { %>
-            <label class="question-label" for="questions<%= i %>">Question <%= i + 1 %></label>
             <div class="question">
+              <label class="question-label" for="questions<%= i %>">Question <%= i + 1 %></label><br />
               <input type="text" class="question-text" name="questions[<%= i %>][question]" value="<%= survey.questions[i].question %>">
               <!-- create drop down menu for question type-->
               <label class="qTypeLabel" for="questionType">Question type: </label>
@@ -50,12 +50,9 @@
               </div>
             </div>
           <% } %>
-        
         <% } %>
-      
           <!-- submit and cancel buttons -->
           <button class="add-question-btn" id="add-question-btn">Add Question</button><br /><br />
-        </div>
         </div>
         <div id="updateCancel">
           <button class="btn btn-primary" type="submit">
@@ -65,8 +62,8 @@
             <i class="fa fa-undo"></i> Cancel
           </a>
           </div>
+        </div>
       </form>
-    
   </div>
 </body>
 </html>
@@ -88,11 +85,11 @@ addQuestionBtn.addEventListener('click', () => {
   questionDiv.classList.add('question');
   //create label for current question
   const questionLabel = document.createElement('label');
-  questionLabel.setAttribute('for', 'question' + questionCount);
+  questionLabel.setAttribute('id', 'question' + questionCount);
   questionLabel.classList.add('question-label');
   questionLabel.innerText = `Question ${questionCount+1}`;
   //create text input for question
-  const questionText = document.createElement('text');
+  const questionText = document.createElement('input');
   questionText.type = 'text';
   questionText.classList.add('question-text');
   questionText.name = `questions[${questionCount}][question]`;
@@ -262,8 +259,7 @@ for (let i = 0; i < existingAnsBtn.length; i++) {
   const existingQuestRmvBtns = document.querySelectorAll('.remove-question-btn');
   for (let i = 0; i < existingQuestRmvBtns.length; i++) {
     existingQuestRmvBtns[i].addEventListener('click', () => {
-      existingQuestRmvBtns[i].parentElement.remove();
-      questionCount--;
+       existingQuestRmvBtns[i].parentElement.remove();
     });
 }
 
@@ -277,7 +273,6 @@ for (let i = 0; i < existingAnsBtn.length; i++) {
 //get question index
   function getQuestionIndex() {
       let allQuestions = Array.from(document.querySelectorAll('.question'));
-      console.log(allQuestions);
       let currentQuestion = event.target.closest('.question');
       let questionIndex = allQuestions.indexOf(currentQuestion);
       return questionIndex;
