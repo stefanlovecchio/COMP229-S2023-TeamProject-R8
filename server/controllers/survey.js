@@ -163,20 +163,16 @@ module.exports.displayTakeSurveyPage = async (req, res, next) => {
 
     module.exports.displayResultsPage = async (req, res, next) => {
   const surveyId = req.params.id;
-
   try {
     const survey = await Survey.findById(surveyId);
 
     if (!survey) {
       return res.status(404).send('Survey not found');
     }
-
     const results = await ResultsModel.findOne({ surveyId: survey });
-
     if (!results) {
       return res.status(404).send('Survey results not found');
     }
-
     for (let i = 0; i < results.questions.length; i++) {
       const questionText = survey.questions[i].question;
       const userAnswers = results.questions[i].answers;
@@ -184,8 +180,11 @@ module.exports.displayTakeSurveyPage = async (req, res, next) => {
       console.log(`Question ${i + 1}: ${questionText}`);
       console.log(`User's answers: ${userAnswers}`);
     }
-
-    res.render('surveys/results', { title: survey.title, survey: survey, results: results });
+    res.render('surveys/results', { 
+      title: survey.title, 
+      survey: survey, 
+      results: results,
+      displayName: req.user ? req.user.displayName : "" });
   } catch (err) {
     console.error('Error fetching results:', err);
     res.status(500).send('Internal Server Error');

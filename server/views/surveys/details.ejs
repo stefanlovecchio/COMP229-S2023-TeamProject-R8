@@ -54,7 +54,7 @@
   </div> 
 
   <script>
-    let questionCount = 0;
+   
     // Add question functionality
     const addQuestionBtn = document.getElementById('add-question-btn');
     const questionsContainer = document.getElementById('questions-container');
@@ -62,7 +62,7 @@
     //add question button click event
     addQuestionBtn.addEventListener('click', () => {
       //add a question
-      questionCount++;
+      let questionCount = document.querySelectorAll('.question').length;
       const questionDiv = document.createElement('div');
       questionDiv.classList.add('question');
       //create label for current question
@@ -104,7 +104,6 @@
       removeQuestionBtn.textContent = 'Remove Question';
       removeQuestionBtn.addEventListener('click', () => {
         questionDiv.remove();
-        questionCount--;
       });
       //attach new question
       questionDiv.appendChild(questionLabel);
@@ -141,19 +140,24 @@
         answerText.placeholder = 'Answer Text';
         answerText.required = true;
         let answerType = event.target.parentNode.querySelector('select').value;
-        switch (answerType) {
-          case 'range': 
+        if (answerType == 'range') {
+          const minLabel = document.createElement('label');
+          minLabel.textContent = 'Min';
           const rangeMin = document.createElement('input');
           rangeMin.type = 'number';
           rangeMin.name = `questions[${getQuestionIndex()}][min]`;
           rangeMin.placeholder = 'Range Mininum Value';
+          answerDiv.appendChild(minLabel);
           answerDiv.appendChild(rangeMin);
-          break;
+          const maxLabel = document.createElement('label');
+          maxLabel.textContent = 'Max';
           const rangeMax = document.createElement('input');
           rangeMax.type = 'number';
           rangeMax.name = `questions[${getQuestionIndex()}][max]`;
           rangeMax.placeholder = 'Range Maximum Value';
+          answerDiv.appendChild(maxLabel);
           answerDiv.appendChild(rangeMax);
+          answerDiv.appendChild(document.createElement('br'));
         }
         //create a remove answer button
         const removeAnswerBtn = document.createElement('button');
@@ -168,7 +172,6 @@
         answerDiv.appendChild(answerLabel);
         answerDiv.appendChild(document.createElement('br'));
         answerDiv.appendChild(answerText);
-        answerDiv.appendChild(document.createElement('br'));
         answerDiv.appendChild(removeAnswerBtn);
         answersContainer.appendChild(answerDiv);
       });
